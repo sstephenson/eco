@@ -1,4 +1,4 @@
-require.paths.unshift __dirname + '/lib'
+require.paths.unshift __dirname + '/lib', __dirname + '/test/lib'
 
 task 'test', 'Run tests', ->
   {testrunner} = require 'nodeunit'

@@ -1,8 +1,5 @@
 {preprocess} = require "eco/preprocessor"
-fs           = require "fs"
-
-fixture = (filename) ->
-  fs.readFileSync __dirname + "/fixtures/" + filename, "utf-8"
+{fixture}    = require "fixtures"
 
 module.exports =
   "preprocessing fixtures/hello.eco": (test) ->
