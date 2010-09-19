@@ -48,7 +48,7 @@ exports.Preprocessor = class Preprocessor
 
   dedent: ->
     @level--
-    fail "unexpected dedent" if @level < 0
+    @fail "unexpected dedent" if @level < 0
 
   fail: (message) ->
     throw "Parse error on line #{@scanner.lineNo}: #{message}"
