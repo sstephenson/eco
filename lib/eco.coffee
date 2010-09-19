@@ -12,7 +12,7 @@ exports.compile = compile = (source) ->
         #{CoffeeScript.compile preprocess(source), noWrap: true}
       }).call(__obj);
       return __out.join("");
-    };
+    };\n
   """
 
 exports.render = (source, data) ->
