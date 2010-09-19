@@ -29,7 +29,8 @@ exports.Preprocessor = class Preprocessor
     @output += line + "\n"
 
   printString: (string) ->
-    @record "print #{sys.inspect string}"
+    if string.length
+      @record "print #{sys.inspect string}"
 
   beginCode: (options) ->
     @printing = options.print

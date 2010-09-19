@@ -1,4 +1,3 @@
-print ''
 if @projects.length
   print '\n  '
   for project in @projects
