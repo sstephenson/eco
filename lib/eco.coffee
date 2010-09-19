@@ -20,3 +20,6 @@ exports.render = (source, data) ->
   template = new Function "module", compile source
   template module
   module.exports data
+
+if require.registerExtension
+  require.registerExtension ".eco", compile
