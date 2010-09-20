@@ -4,9 +4,6 @@ sys       = require "sys"
 repeat = (string, count) ->
   Array(count + 1).join string
 
-trim = (string) ->
-  string.replace(/^\s+/, "").replace(/\s+$/, "")
-
 exports.preprocess = (source) ->
   preprocessor = new Preprocessor source
   preprocessor.preprocess()
@@ -36,7 +33,6 @@ exports.Preprocessor = class Preprocessor
     @printing = options.print
 
   recordCode: (code) ->
-    code = trim code
     if code isnt "end"
       if @printing
         @printing = no

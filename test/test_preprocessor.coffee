@@ -16,10 +16,10 @@ module.exports =
     test.expect 1
     try
       preprocess """
-        {: if item = @items?[0] +}
-          {:= item.price :}
-          {- end :}
-        {- end :}
+        <% if item = @items?[0]: %>
+          <%= item.price %>
+          <% end %>
+        <% end %>
       """
     catch err
       test.same "Parse error on line 4: unexpected dedent", err.toString()
@@ -29,8 +29,8 @@ module.exports =
     test.expect 1
     try
       preprocess """
-        {:= item.price if
-              item = @items?[0] -}
+        <%= item.price if
+              item = @items?[0] %>
       """
     catch err
       test.same "Parse error on line 1: unexpected newline in code block", err.toString()
@@ -39,7 +39,7 @@ module.exports =
   "unexpected end of template": (test) ->
     test.expect 1
     try
-      preprocess "{:= item.price"
+      preprocess "<%= item.price"
     catch err
       test.same "Parse error on line 1: unexpected end of template", err.toString()
     test.done()

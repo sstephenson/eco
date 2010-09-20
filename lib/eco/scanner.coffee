@@ -1,5 +1,8 @@
 {StringScanner} = require "strscan"
 
+trim = (string) ->
+  string.replace(/^\s+/, "").replace(/\s+$/, "")
+
 exports.scan = (source) ->
   tokens  = []
   scanner = new Scanner source
@@ -8,10 +11,12 @@ exports.scan = (source) ->
   tokens
 
 exports.Scanner = class Scanner
-  @patterns: {
-    data: /(.*?)(\{([:-])(=?)|\n|$)/
-    code: /(.*?)(([:+])\}|\n|$)/
+  @modePatterns: {
+    data: /(.*?)(<%((=)?)|\n|$)/
+    code: /(.*?)(((:)\s*)?%>|\n|$)/
   }
+
+  @dedentablePattern: /^(end|when|else|catch|finally)(?:\W|$)/
 
   constructor: (source) ->
     @source  = source.replace /\r\n?/g, "\n"
@@ -42,34 +47,38 @@ exports.Scanner = class Scanner
           @scanCode callback
 
   advance: ->
-    @scanner.scanUntil @constructor.patterns[@mode]
+    @scanner.scanUntil Scanner.modePatterns[@mode]
     @buffer   += @scanner.getCapture 0
     @tail      = @scanner.getCapture 1
-    @directive = @scanner.getCapture 2
-    @printing  = @scanner.getCapture 3
+    @directive = @scanner.getCapture 3
 
   scanData: (callback) ->
-    if @directive
-      callback ["printString", @flush()]
-      callback ["dedent"] if @directive is "-"
-      callback ["beginCode", print: @printing is "="]
-      @mode = "code"
-
-    else if @tail is "\n"
+    if @tail is "\n"
       @buffer += @tail
       @lineNo++
       @scan callback
 
-  scanCode: (callback) ->
-    if @directive
-      callback ["recordCode", @flush()]
-      callback ["indent"] if @directive is "+"
-      @mode = "data"
+    else if @tail
+      callback ["printString", @flush()]
+      callback ["beginCode", print: @directive is "="]
+      @mode = "code"
 
-    else if @tail is "\n"
+  scanCode: (callback) ->
+    if @tail is "\n"
       callback ["fail", "unexpected newline in code block"]
+
+    else if @tail
+      code = trim @flush()
+      callback ["dedent"] if @isDedentable code
+      callback ["recordCode", code]
+      callback ["indent"] if @directive is ":"
+      @mode = "data"
 
   flush: ->
     buffer  = @buffer
     @buffer = ""
     buffer
+
+  isDedentable: (code) ->
+    code.match Scanner.dedentablePattern
+

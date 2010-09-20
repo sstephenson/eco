@@ -1,7 +1,7 @@
-{: if @projects.length +}
-  {: for project in @projects +}
-    <a href="{:= project.url :}">{:= project.name :}</a>
-  {- end :}
-{- else +}
+<% if @projects.length: %>
+  <% for project in @projects: %>
+    <a href="<%= project.url %>"><%= project.name %></a>
+  <% end %>
+<% else: %>
   No projects
-{- end :}
+<% end %>

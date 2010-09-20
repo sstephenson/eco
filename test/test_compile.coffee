@@ -15,7 +15,7 @@ module.exports =
   "parse error throws exception": (test) ->
     test.expect 1
     try
-      eco.compile "{: unclosed tag"
+      eco.compile "<% unclosed tag"
     catch err
       test.ok err.toString().match /^Parse error on line 1/
     test.done()
