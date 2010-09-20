@@ -35,8 +35,8 @@ module.exports =
     test.same ["printString", ""], tokens.shift()
     test.done()
 
-  "-} ends a code block and indents": (test) ->
-    tokens = scan "{: for project in @projects -}"
+  "+} ends a code block and indents": (test) ->
+    tokens = scan "{: for project in @projects +}"
     test.same ["printString", ""], tokens.shift()
     test.same ["beginCode", print: false], tokens.shift()
     test.same ["recordCode", " for project in @projects "], tokens.shift()

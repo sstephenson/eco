@@ -1,7 +1,7 @@
-{: if @projects.length -}
-  {: for project in @projects -}
+{: if @projects.length +}
+  {: for project in @projects +}
     <a href="{:= project.url :}">{:= project.name :}</a>
   {- end :}
-{- else -}
+{- else +}
   No projects
 {- end :}

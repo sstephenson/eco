@@ -16,7 +16,7 @@ module.exports =
     test.expect 1
     try
       preprocess """
-        {: if item = @items?[0] -}
+        {: if item = @items?[0] +}
           {:= item.price :}
           {- end :}
         {- end :}

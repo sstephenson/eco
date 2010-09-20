@@ -10,7 +10,7 @@ exports.scan = (source) ->
 exports.Scanner = class Scanner
   @patterns: {
     data: /(.*?)(\{([:-])(=?)|\n|$)/
-    code: /(.*?)(([:-])\}|\n|$)/
+    code: /(.*?)(([:+])\}|\n|$)/
   }
 
   constructor: (source) ->
@@ -63,7 +63,7 @@ exports.Scanner = class Scanner
   scanCode: (callback) ->
     if @directive
       callback ["recordCode", @flush()]
-      callback ["indent"] if @directive is "-"
+      callback ["indent"] if @directive is "+"
       @mode = "data"
 
     else if @tail is "\n"
