@@ -30,6 +30,22 @@ module.exports =
     test.same ["indent"], tokens.shift()
     test.done()
 
+  "'-> %>' ends a code block and indents": (test) ->
+    tokens = scan "<%= @render 'layout', -> %>"
+    test.same ["printString", ""], tokens.shift()
+    test.same ["beginCode", print: true], tokens.shift()
+    test.same ["recordCode", "@render 'layout', ->"], tokens.shift()
+    test.same ["indent"], tokens.shift()
+    test.done()
+
+  "'=> %>' ends a code block and indents": (test) ->
+    tokens = scan "<%= @render 'layout', => %>"
+    test.same ["printString", ""], tokens.shift()
+    test.same ["beginCode", print: true], tokens.shift()
+    test.same ["recordCode", "@render 'layout', =>"], tokens.shift()
+    test.same ["indent"], tokens.shift()
+    test.done()
+
   "'<% else: %>' dedents, begins a code block, and indents": (test) ->
     tokens = scan "<% else: %>"
     test.same ["printString", ""], tokens.shift()

@@ -19,6 +19,9 @@ module.exports = function(__obj) {
   };
   (function() {
     var _a, _b, _c;
+var __bind = function(func, context) {
+    return function(){ return func.apply(context, arguments); };
+  };
 _b = this.items;
 for (_a = 0, _c = _b.length; _a < _c; _a++) {
   (function() {
@@ -26,7 +29,7 @@ for (_a = 0, _c = _b.length; _a < _c; _a++) {
     print('\n  ');
     print(this.contentTag("div", {
       "class": "item"
-    }, function() {
+    }, __bind(function() {
       print('\n    ');
       print(this.contentTag("span", {
         "class": "price"
@@ -41,7 +44,7 @@ for (_a = 0, _c = _b.length; _a < _c; _a++) {
         return print(item.name);
       }));
       return print('\n  ');
-    }));
+    }, this)));
     return print('\n');
   }).call(this);
 }

@@ -13,7 +13,7 @@ exports.scan = (source) ->
 exports.Scanner = class Scanner
   @modePatterns: {
     data: /(.*?)(<%((=)?)|\n|$)/
-    code: /(.*?)(((:)\s*)?%>|\n|$)/
+    code: /(.*?)(((:|(->|=>))\s*)?%>|\n|$)/
   }
 
   @dedentablePattern: /^(end|when|else|catch|finally)(?:\W|$)/
@@ -51,6 +51,7 @@ exports.Scanner = class Scanner
     @buffer   += @scanner.getCapture 0
     @tail      = @scanner.getCapture 1
     @directive = @scanner.getCapture 3
+    @arrow     = @scanner.getCapture 4
 
   scanData: (callback) ->
     if @tail is "\n"
@@ -59,20 +60,22 @@ exports.Scanner = class Scanner
       @scan callback
 
     else if @tail
+      @mode = "code"
       callback ["printString", @flush()]
       callback ["beginCode", print: @directive is "="]
-      @mode = "code"
 
   scanCode: (callback) ->
     if @tail is "\n"
       callback ["fail", "unexpected newline in code block"]
 
     else if @tail
-      code = trim @flush()
+      @mode = "data"
+      code  = trim @flush()
+      code += " #{@arrow}" if @arrow
+
       callback ["dedent"] if @isDedentable code
       callback ["recordCode", code]
-      callback ["indent"] if @directive is ":"
-      @mode = "data"
+      callback ["indent"] if @directive
 
   flush: ->
     buffer  = @buffer

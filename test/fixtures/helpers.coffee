@@ -1,6 +1,6 @@
 for item in @items
   print '\n  '
-  print @contentTag "div", class: "item", ->
+  print @contentTag "div", class: "item", =>
     print '\n    '
     print @contentTag "span", class: "price", ->
       print '$'
