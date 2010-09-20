@@ -19,10 +19,10 @@ module.exports = function(__obj) {
   };
   (function() {
     print('Hello, ');
-print(this.name);
-print('.\nI\'M SHOUTING AT YOU, ');
-print(this.name.toUpperCase());
-print('!\n');
+    print(this.name);
+    print('.\nI\'M SHOUTING AT YOU, ');
+    print(this.name.toUpperCase());
+    print('!\n');
   }).call(__merge(__obj, {
     print: print,
     capture: capture

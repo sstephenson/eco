@@ -1,6 +1,13 @@
+indent = (string, width) ->
+  space = new Array(width + 1).join " "
+  lines = space + line for line in string.split "\n"
+  lines.join "\n"
+
 exports.compile = compile = (source) ->
   CoffeeScript = require "coffee-script"
   {preprocess} = require "eco/preprocessor"
+
+  script = CoffeeScript.compile preprocess(source), noWrap: true
 
   """
     var __merge = function(a, b) {
@@ -23,7 +30,7 @@ exports.compile = compile = (source) ->
         return result;
       };
       (function() {
-        #{CoffeeScript.compile preprocess(source), noWrap: true}
+    #{indent script, 4}
       }).call(__merge(__obj, {
         print: print,
         capture: capture

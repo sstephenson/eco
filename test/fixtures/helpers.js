@@ -19,36 +19,36 @@ module.exports = function(__obj) {
   };
   (function() {
     var _a, _b, _c;
-var __bind = function(func, context) {
-    return function(){ return func.apply(context, arguments); };
-  };
-_b = this.items;
-for (_a = 0, _c = _b.length; _a < _c; _a++) {
-  (function() {
-    var item = _b[_a];
-    print('\n  ');
-    print(this.contentTag("div", {
-      "class": "item"
-    }, __bind(function() {
-      print('\n    ');
-      print(this.contentTag("span", {
-        "class": "price"
-      }, function() {
-        print('$');
-        return print(item.price);
-      }));
-      print('\n    ');
-      print(this.contentTag("span", {
-        "class": "name"
-      }, function() {
-        return print(item.name);
-      }));
-      return print('\n  ');
-    }, this)));
-    return print('\n');
-  }).call(this);
-}
-print('\n');
+    var __bind = function(func, context) {
+        return function(){ return func.apply(context, arguments); };
+      };
+    _b = this.items;
+    for (_a = 0, _c = _b.length; _a < _c; _a++) {
+      (function() {
+        var item = _b[_a];
+        print('\n  ');
+        print(this.contentTag("div", {
+          "class": "item"
+        }, __bind(function() {
+          print('\n    ');
+          print(this.contentTag("span", {
+            "class": "price"
+          }, function() {
+            print('$');
+            return print(item.price);
+          }));
+          print('\n    ');
+          print(this.contentTag("span", {
+            "class": "name"
+          }, function() {
+            return print(item.name);
+          }));
+          return print('\n  ');
+        }, this)));
+        return print('\n');
+      }).call(this);
+    }
+    print('\n');
   }).call(__merge(__obj, {
     print: print,
     capture: capture
