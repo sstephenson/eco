@@ -21,5 +21,10 @@ exports.render = (source, data) ->
   template module
   module.exports data
 
-if require.registerExtension
+if require.extensions
+  require.extensions[".eco"] = (module, filename) ->
+    source = require("fs").readFileSync filename, "utf-8"
+    module._compile compile(source), filename
+
+else if require.registerExtension
   require.registerExtension ".eco", compile
