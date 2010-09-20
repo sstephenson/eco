@@ -1,7 +1,7 @@
-CoffeeScript = require "coffee-script"
-{preprocess} = require "eco/preprocessor"
-
 exports.compile = compile = (source) ->
+  CoffeeScript = require "coffee-script"
+  {preprocess} = require "eco/preprocessor"
+
   """
     module.exports = function(__obj) {
       var __out = [];
