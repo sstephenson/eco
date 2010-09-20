@@ -12,6 +12,11 @@ module.exports =
     test.same fixture("projects.coffee"), preprocess fixture("projects.eco")
     test.done()
 
+  "preprocessing fixtures/helpers.eco": (test) ->
+    test.expect 1
+    test.same fixture("helpers.coffee"), preprocess fixture("helpers.eco")
+    test.done()
+
   "unexpected dedent": (test) ->
     test.expect 1
     try

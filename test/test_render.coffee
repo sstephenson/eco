@@ -32,3 +32,15 @@ module.exports =
     test.same fixture("projects.out.2"), output
     test.done()
 
+  "rendering helpers.eco": (test) ->
+    output = eco.render fixture("helpers.eco"),
+      items: [
+        { name: "Caprese", price: "5.25"},
+        { name: "Artichoke", price: "6.25" }
+      ]
+      contentTag: (tagName, attributes, callback) ->
+        attrs = " #{name}=\"#{value}\"" for name, value of attributes
+        "<#{tagName}#{attrs}>#{@capture callback}</#{tagName}>"
+
+    test.same fixture("helpers.out.1"), output
+    test.done()

@@ -12,6 +12,11 @@ module.exports =
     test.same fixture("projects.js"), eco.compile fixture("projects.eco")
     test.done()
 
+  "compiling fixtures/helpers.eco": (test) ->
+    test.expect 1
+    test.same fixture("helpers.js"), eco.compile fixture("helpers.eco")
+    test.done()
+
   "parse error throws exception": (test) ->
     test.expect 1
     try
