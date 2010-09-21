@@ -7,6 +7,7 @@
   , "url": "http://github.com/sstephenson/eco/raw/master/LICENSE"
   }]
 , "main": "./lib/eco"
+, "directories": {"lib": "./lib/eco"}
 , "repository":
   { "type": "git"
   , "url": "http://github.com/sstephenson/eco.git"
