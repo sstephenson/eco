@@ -1,12 +1,8 @@
-indent = (string, width) ->
-  space = new Array(width + 1).join " "
-  lines = space + line for line in string.split "\n"
-  lines.join "\n"
+CoffeeScript = require "coffee-script"
+{preprocess} = require "eco/preprocessor"
+{indent}     = require "eco/util"
 
 exports.compile = compile = (source) ->
-  CoffeeScript = require "coffee-script"
-  {preprocess} = require "eco/preprocessor"
-
   script = CoffeeScript.compile preprocess(source), noWrap: true
 
   """

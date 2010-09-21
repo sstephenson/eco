@@ -1,8 +1,6 @@
 {Scanner} = require "eco/scanner"
+{repeat}  = require "eco/util"
 sys       = require "sys"
-
-repeat = (string, count) ->
-  Array(count + 1).join string
 
 exports.preprocess = (source) ->
   preprocessor = new Preprocessor source

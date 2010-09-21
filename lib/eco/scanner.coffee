@@ -1,7 +1,5 @@
 {StringScanner} = require "strscan"
-
-trim = (string) ->
-  string.replace(/^\s+/, "").replace(/\s+$/, "")
+{trim}          = require "eco/util"
 
 exports.scan = (source) ->
   tokens  = []
