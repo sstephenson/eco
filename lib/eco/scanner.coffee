@@ -10,7 +10,7 @@ exports.scan = (source) ->
 
 exports.Scanner = class Scanner
   @modePatterns: {
-    data: /(.*?)(<%((=)?)|\n|$)/
+    data: /(.*?)(<%(([=-])?)|\n|$)/
     code: /(.*?)(((:|(->|=>))\s*)?%>|\n|$)/
   }
 
@@ -60,7 +60,7 @@ exports.Scanner = class Scanner
     else if @tail
       @mode = "code"
       callback ["printString", @flush()]
-      callback ["beginCode", print: @directive is "="]
+      callback ["beginCode", print: @directive?, safe: @directive is "-"]
 
   scanCode: (callback) ->
     if @tail is "\n"

@@ -28,9 +28,10 @@ module.exports =
   "rendering projects.eco with multiple projects": (test) ->
     output = eco.render fixture("projects.eco"), projects: [
       { name: "PowerTMS Active Shipments Page Redesign", url: "/projects/1" },
-      { name: "SCU Intranet", url: "/projects/2" },
+      { name: "SCU Intranet", url: "/projects/2", description: "<p><em>On hold</em></p>" },
       { name: "Sales Template", url: "/projects/3" }
     ]
+    console.log output
     test.same fixture("projects.out.2"), output
     test.done()
 
@@ -75,4 +76,5 @@ module.exports =
   "'undefined' is never coerced into a string": (test) ->
     test.same "", eco.render "<%= @x %>"
     test.same "", eco.render "<%= @safe @x %>"
+    test.same "", eco.render "<%- @x %>"
     test.done()

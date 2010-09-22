@@ -11,7 +11,7 @@ exports.Preprocessor = class Preprocessor
     @scanner  = new Scanner source
     @output   = ""
     @level    = 0
-    @printing = no
+    @options  = {}
     @captures = []
 
   preprocess: ->
@@ -29,13 +29,15 @@ exports.Preprocessor = class Preprocessor
       @record "_print _safe #{sys.inspect string}"
 
   beginCode: (options) ->
-    @printing = options.print
+    @options = options
 
   recordCode: (code) ->
     if code isnt "end"
-      if @printing
-        @printing = no
-        @record "_print #{code}"
+      if @options.print
+        if @options.safe
+          @record "_print _safe #{code}"
+        else
+          @record "_print #{code}"
       else
         @record code
 
