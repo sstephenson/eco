@@ -6,7 +6,7 @@ task "test", "Run tests", ->
   process.chdir __dirname
   testrunner.run ["test"]
 
-task "fixtures", "Generate .coffee and .js fixtures from .eco fixtures", ->
+task "fixtures", "Generate .coffee fixtures from .eco fixtures", ->
   fs   = require "fs"
   path = require "path"
   dir  = "#{__dirname}/test/fixtures"
@@ -17,6 +17,4 @@ task "fixtures", "Generate .coffee and .js fixtures from .eco fixtures", ->
       {preprocess} = require "eco/preprocessor"
       basename     = path.basename filename, ".eco"
       source       = fs.readFileSync "#{dir}/#{filename}", "utf-8"
-
       fs.writeFileSync "#{dir}/#{basename}.coffee", preprocess source
-      fs.writeFileSync "#{dir}/#{basename}.js",     eco.compile source
