@@ -60,3 +60,19 @@ module.exports =
 
     test.done()
 
+  "'end' dedents properly after an automatic capture": (test) ->
+    output = preprocess """
+      <ul>
+      <% @getItems (items) -> %>
+        <% for item in items: %>
+        <li><%= item.name %></li>
+        <% end %>
+      <% end %>
+      </ul>
+    """
+
+    lines = output.split("\n")
+    test.same "", lines.pop()
+    test.ok lines.pop().match(/^print/)
+    test.done()
+
