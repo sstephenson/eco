@@ -19,6 +19,6 @@
   }
 , "dependencies":
   { "strscan": ">=1.0.0"
-  , "coffee-script": ">=0.9.3"
+  , "coffee-script": ">=0.9.4"
   }
 }
