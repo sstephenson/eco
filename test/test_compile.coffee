@@ -3,17 +3,14 @@ eco       = require "eco"
 
 module.exports =
   "compiling fixtures/hello.eco": (test) ->
-    test.expect 1
     test.same fixture("hello.js"), eco.compile fixture("hello.eco")
     test.done()
 
   "compiling fixtures/projects.eco": (test) ->
-    test.expect 1
     test.same fixture("projects.js"), eco.compile fixture("projects.eco")
     test.done()
 
   "compiling fixtures/helpers.eco": (test) ->
-    test.expect 1
     test.same fixture("helpers.js"), eco.compile fixture("helpers.eco")
     test.done()
 

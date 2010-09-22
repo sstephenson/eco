@@ -3,17 +3,14 @@
 
 module.exports =
   "preprocessing fixtures/hello.eco": (test) ->
-    test.expect 1
     test.same fixture("hello.coffee"), preprocess fixture("hello.eco")
     test.done()
 
   "preprocessing fixtures/projects.eco": (test) ->
-    test.expect 1
     test.same fixture("projects.coffee"), preprocess fixture("projects.eco")
     test.done()
 
   "preprocessing fixtures/helpers.eco": (test) ->
-    test.expect 1
     test.same fixture("helpers.coffee"), preprocess fixture("helpers.eco")
     test.done()
 
@@ -50,8 +47,6 @@ module.exports =
     test.done()
 
   "automatic captures use the same arrow as the function definition": (test) ->
-    test.expect 2
-
     output = preprocess "<% @foo -> %><br><% end %>"
     test.ok output.match /capture ->/
 

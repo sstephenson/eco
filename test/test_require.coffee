@@ -3,7 +3,6 @@ eco       = require "eco"
 
 module.exports =
   "requiring eco templates as modules": (test) ->
-    test.expect 2
     require.paths.unshift __dirname + "/fixtures"
 
     hello = require "hello"
