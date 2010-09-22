@@ -1,57 +1,71 @@
-var __merge = function(a, b) {
-  var result = {}, key;
-  for (key in a) result[key] = a[key];
-  for (key in b) result[key] = b[key];
-  return result;
-};
 module.exports = function(__obj) {
-  var __out = [];
-  var print = function() {
-    __out.push.apply(__out, arguments);
-  };
-  var capture = function(callback) {
-    var out = __out, result;
-    __out = [];
-    callback.call(this);
-    result = __out.join("");
-    __out = out;
-    return result;
-  };
-  (function() {
-    var _a, _b, _c;
+  return (function() {
+    var _i, _len, _ref;
     var __bind = function(func, context) {
         return function(){ return func.apply(context, arguments); };
       };
-    _b = this.items;
-    for (_a = 0, _c = _b.length; _a < _c; _a++) {
+    _ref = this.items;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       (function() {
-        var item = _b[_a];
-        print('\n  ');
-        print(this.contentTag("div", {
+        var item = _ref[_i];
+        this.print(this.safe('\n  '));
+        this.print(this.contentTag("div", {
           "class": "item"
         }, __bind(function() {
-          print('\n    ');
-          print(this.contentTag("span", {
+          this.print(this.safe('\n    '));
+          this.print(this.contentTag("span", {
             "class": "price"
           }, function() {
-            print('$');
-            return print(item.price);
+            this.print(this.safe('$'));
+            return this.print(item.price);
           }));
-          print('\n    ');
-          print(this.contentTag("span", {
+          this.print(this.safe('\n    '));
+          this.print(this.contentTag("span", {
             "class": "name"
           }, function() {
-            return print(item.name);
+            return this.print(item.name);
           }));
-          return print('\n  ');
+          return this.print(this.safe('\n  '));
         }, this)));
-        return print('\n');
+        return this.print(this.safe('\n'));
       }).call(this);
     }
-    print('\n');
-  }).call(__merge(__obj, {
-    print: print,
-    capture: capture
-  }));
-  return __out.join("");
-};
+    this.print(this.safe('\n'));
+    return this.toString();
+  }).call((function() {
+    var key, out = [], obj = {
+      print: function(value) {
+        if (typeof value !== 'undefined' && value != null)
+          out.push(this.sanitize(value));
+      },
+      capture: function(callback) {
+        var oldOut = out, result;
+        out = [];
+        callback.call(this);
+        result = out.join("");
+        out = oldOut;
+        return this.safe(result);
+      },
+      sanitize: function(value) {
+        return value.ecoSafe ? value : this.escape(value);
+      },
+      escape: function(value) {
+        return ('' + value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      },
+      safe: function(value) {
+        var result = new String(value);
+        result.ecoSafe = true;
+        return result;
+      },
+      toString: function() {
+        return out.join("");
+      }
+    };
+    for (key in __obj) obj[key] = __obj[key];
+    return obj;
+  })());
+}

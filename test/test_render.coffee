@@ -40,7 +40,31 @@ module.exports =
       ]
       contentTag: (tagName, attributes, callback) ->
         attrs = " #{name}=\"#{value}\"" for name, value of attributes
-        "<#{tagName}#{attrs}>#{@capture callback}</#{tagName}>"
+        @safe "<#{tagName}#{attrs.join("")}>#{@capture callback}</#{tagName}>"
 
     test.same fixture("helpers.out.1"), output
     test.done()
+
+  "HTML is escaped by default": (test) ->
+    output = eco.render "<%= @emailAddress %>",
+      emailAddress: "<sstephenson@gmail.com>"
+
+    test.same "&lt;sstephenson@gmail.com&gt;", output
+    test.done()
+
+  "unescaped HTML can be rendered from a helper": (test) ->
+    output = eco.render "<%= @helper() %>",
+      helper: -> @safe "<boo>"
+
+    test.same "<boo>", output
+    test.done()
+
+  "escape method can be overridden": (test) ->
+    output = eco.render "<%= @emailAddress %>",
+      emailAddress: "<sstephenson@gmail.com>"
+      escape: (string) ->
+        string.toUpperCase()
+
+    test.same "<SSTEPHENSON@GMAIL.COM>", output
+    test.done()
+

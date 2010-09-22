@@ -25,7 +25,7 @@ exports.Preprocessor = class Preprocessor
 
   printString: (string) ->
     if string.length
-      @record "print #{sys.inspect string}"
+      @record "@print @safe #{sys.inspect string}"
 
   beginCode: (options) ->
     @printing = options.print
@@ -34,7 +34,7 @@ exports.Preprocessor = class Preprocessor
     if code isnt "end"
       if @printing
         @printing = no
-        @record "print #{code}"
+        @record "@print #{code}"
       else
         @record code
 
