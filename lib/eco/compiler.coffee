@@ -8,6 +8,8 @@ exports.compile = compile = (source) ->
   """
     module.exports = function(__obj) {
       var _safe = function(value) {
+        if (typeof value === 'undefined' && value == null)
+          value = '';
         var result = new String(value);
         result.ecoSafe = true;
         return result;

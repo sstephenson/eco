@@ -72,3 +72,7 @@ module.exports =
     test.same "<SSTEPHENSON@GMAIL.COM>", output
     test.done()
 
+  "'undefined' is never coerced into a string": (test) ->
+    test.same "", eco.render "<%= @x %>"
+    test.same "", eco.render "<%= @safe @x %>"
+    test.done()
