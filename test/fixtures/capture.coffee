@@ -1,13 +1,13 @@
-renderItem = (item) =>
-  capture =>
-    print safe '\n  <div class="item">\n    <span class="name">'
-    print item.name
-    print safe '</span>\n    <span class="price">$'
-    print item.price
-    print safe '</span>\n  </div>\n'
-print safe '\n\n'
+renderItem = (item) ->
+  _capture ->
+    _print _safe '\n  <div class="item">\n    <span class="name">'
+    _print item.name
+    _print _safe '</span>\n    <span class="price">$'
+    _print item.price
+    _print _safe '</span>\n  </div>\n'
+_print _safe '\n\n'
 for item in @items
-  print safe '\n  '
-  print renderItem item
-  print safe '\n'
-print safe '\n'
+  _print _safe '\n  '
+  _print renderItem item
+  _print _safe '\n'
+_print _safe '\n'

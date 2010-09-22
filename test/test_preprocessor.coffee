@@ -68,6 +68,6 @@ module.exports =
 
     lines = output.split("\n")
     test.same "", lines.pop()
-    test.ok lines.pop().match(/^print/)
+    test.ok lines.pop().match(/^\S/)
     test.done()
 

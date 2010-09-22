@@ -1,12 +1,12 @@
 if @projects.length
-  print safe '\n  '
+  _print _safe '\n  '
   for project in @projects
-    print safe '\n    <a href="'
-    print project.url
-    print safe '">'
-    print project.name
-    print safe '</a>\n  '
-  print safe '\n'
+    _print _safe '\n    <a href="'
+    _print project.url
+    _print _safe '">'
+    _print project.name
+    _print _safe '</a>\n  '
+  _print _safe '\n'
 else
-  print safe '\n  No projects\n'
-print safe '\n'
+  _print _safe '\n  No projects\n'
+_print _safe '\n'

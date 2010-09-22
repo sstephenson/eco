@@ -3,37 +3,31 @@ CoffeeScript = require "coffee-script"
 {indent}     = require "eco/util"
 
 exports.compile = compile = (source) ->
-  bindings = """
-    print = (value) => @print value
-    capture = (callback) => @capture callback
-    safe = (value) => @safe value\n
-  """
-
-  coffee = bindings + preprocess source
-  script = CoffeeScript.compile coffee, noWrap: true
+  script = CoffeeScript.compile preprocess(source), noWrap: true
 
   """
     module.exports = function(__obj) {
+      var _safe = function(value) {
+        var result = new String(value);
+        result.ecoSafe = true;
+        return result;
+      };
       return (function() {
+        var __out = [], __self = this, _print = function(value) {
+          if (typeof value !== 'undefined' && value != null)
+            __out.push(value.ecoSafe ? value : __self.escape(value));
+        }, _capture = function(callback) {
+          var out = __out, result;
+          __out = [];
+          callback.call(this);
+          result = __out.join('');
+          __out = out;
+          return _safe(result);
+        };
     #{indent script, 4}
-        return this.toString();
+        return __out.join('');
       }).call((function() {
-        var key, out = [], obj = {
-          print: function(value) {
-            if (typeof value !== 'undefined' && value != null)
-              out.push(this.sanitize(value));
-          },
-          capture: function(callback) {
-            var oldOut = out, result;
-            out = [];
-            callback.call(this);
-            result = out.join("");
-            out = oldOut;
-            return this.safe(result);
-          },
-          sanitize: function(value) {
-            return value.ecoSafe ? value : this.escape(value);
-          },
+        var obj = {
           escape: function(value) {
             return ('' + value)
               .replace(/&/g, '&amp;')
@@ -41,19 +35,12 @@ exports.compile = compile = (source) ->
               .replace(/>/g, '&gt;')
               .replace(/"/g, '&quot;');
           },
-          safe: function(value) {
-            var result = new String(value);
-            result.ecoSafe = true;
-            return result;
-          },
-          toString: function() {
-            return out.join("");
-          }
-        };
+          safe: _safe
+        }, key;
         for (key in __obj) obj[key] = __obj[key];
         return obj;
       })());
-    }
+    };
   """
 
 exports.render = (source, data) ->
