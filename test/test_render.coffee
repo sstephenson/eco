@@ -1,6 +1,11 @@
 eco       = require "eco"
 {fixture} = require "fixtures"
 
+items = [
+  { name: "Caprese", price: "5.25"},
+  { name: "Artichoke", price: "6.25" }
+]
+
 module.exports =
   "rendering hello.eco": (test) ->
     test.expect 1
@@ -34,15 +39,17 @@ module.exports =
 
   "rendering helpers.eco": (test) ->
     output = eco.render fixture("helpers.eco"),
-      items: [
-        { name: "Caprese", price: "5.25"},
-        { name: "Artichoke", price: "6.25" }
-      ]
+      items: items
       contentTag: (tagName, attributes, callback) ->
         attrs = " #{name}=\"#{value}\"" for name, value of attributes
         @safe "<#{tagName}#{attrs.join("")}>#{callback()}</#{tagName}>"
 
     test.same fixture("helpers.out.1"), output
+    test.done()
+
+  "rendering capture.eco": (test) ->
+    output = eco.render fixture("capture.eco"), items: items
+    test.same fixture("capture.out.1"), output
     test.done()
 
   "HTML is escaped by default": (test) ->
