@@ -3,7 +3,14 @@ CoffeeScript = require "coffee-script"
 {indent}     = require "eco/util"
 
 exports.compile = compile = (source) ->
-  script = CoffeeScript.compile preprocess(source), noWrap: true
+  bindings = """
+    print = (value) => @print value
+    capture = (callback) => @capture callback
+    safe = (value) => @safe value\n
+  """
+
+  coffee = bindings + preprocess source
+  script = CoffeeScript.compile coffee, noWrap: true
 
   """
     module.exports = function(__obj) {

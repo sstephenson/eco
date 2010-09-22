@@ -1,36 +1,51 @@
 module.exports = function(__obj) {
   return (function() {
-    var _i, _len, _ref;
+    var _i, _len, _ref, capture, print, safe;
     var __bind = function(func, context) {
         return function(){ return func.apply(context, arguments); };
       };
+    print = __bind(function(value) {
+      return this.print(value);
+    }, this);
+    capture = __bind(function(callback) {
+      return this.capture(callback);
+    }, this);
+    safe = __bind(function(value) {
+      return this.safe(value);
+    }, this);
     _ref = this.items;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       (function() {
         var item = _ref[_i];
-        this.print(this.safe('\n  '));
-        this.print(this.contentTag("div", {
+        print(safe('\n  '));
+        print(this.contentTag("div", {
           "class": "item"
         }, __bind(function() {
-          this.print(this.safe('\n    '));
-          this.print(this.contentTag("span", {
-            "class": "price"
-          }, function() {
-            this.print(this.safe('$'));
-            return this.print(item.price);
-          }));
-          this.print(this.safe('\n    '));
-          this.print(this.contentTag("span", {
-            "class": "name"
-          }, function() {
-            return this.print(item.name);
-          }));
-          return this.print(this.safe('\n  '));
+          return capture(__bind(function() {
+            print(safe('\n    '));
+            print(this.contentTag("span", {
+              "class": "price"
+            }, function() {
+              return capture(function() {
+                print(safe('$'));
+                return print(item.price);
+              });
+            }));
+            print(safe('\n    '));
+            print(this.contentTag("span", {
+              "class": "name"
+            }, function() {
+              return capture(function() {
+                return print(item.name);
+              });
+            }));
+            return print(safe('\n  '));
+          }, this));
         }, this)));
-        return this.print(this.safe('\n'));
+        return print(safe('\n'));
       }).call(this);
     }
-    this.print(this.safe('\n'));
+    print(safe('\n'));
     return this.toString();
   }).call((function() {
     var key, out = [], obj = {

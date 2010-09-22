@@ -40,7 +40,7 @@ module.exports =
       ]
       contentTag: (tagName, attributes, callback) ->
         attrs = " #{name}=\"#{value}\"" for name, value of attributes
-        @safe "<#{tagName}#{attrs.join("")}>#{@capture callback}</#{tagName}>"
+        @safe "<#{tagName}#{attrs.join("")}>#{callback()}</#{tagName}>"
 
     test.same fixture("helpers.out.1"), output
     test.done()

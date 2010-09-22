@@ -1,22 +1,34 @@
 module.exports = function(__obj) {
   return (function() {
-    var _i, _len, _ref, project;
+    var _i, _len, _ref, capture, print, project, safe;
+    var __bind = function(func, context) {
+        return function(){ return func.apply(context, arguments); };
+      };
+    print = __bind(function(value) {
+      return this.print(value);
+    }, this);
+    capture = __bind(function(callback) {
+      return this.capture(callback);
+    }, this);
+    safe = __bind(function(value) {
+      return this.safe(value);
+    }, this);
     if (this.projects.length) {
-      this.print(this.safe('\n  '));
+      print(safe('\n  '));
       _ref = this.projects;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         project = _ref[_i];
-        this.print(this.safe('\n    <a href="'));
-        this.print(project.url);
-        this.print(this.safe('">'));
-        this.print(project.name);
-        this.print(this.safe('</a>\n  '));
+        print(safe('\n    <a href="'));
+        print(project.url);
+        print(safe('">'));
+        print(project.name);
+        print(safe('</a>\n  '));
       }
-      this.print(this.safe('\n'));
+      print(safe('\n'));
     } else {
-      this.print(this.safe('\n  No projects\n'));
+      print(safe('\n  No projects\n'));
     }
-    this.print(this.safe('\n'));
+    print(safe('\n'));
     return this.toString();
   }).call((function() {
     var key, out = [], obj = {

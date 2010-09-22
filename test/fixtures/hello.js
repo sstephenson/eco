@@ -1,10 +1,23 @@
 module.exports = function(__obj) {
   return (function() {
-    this.print(this.safe('Hello, '));
-    this.print(this.name);
-    this.print(this.safe('.\nI\'M SHOUTING AT YOU, '));
-    this.print(this.name.toUpperCase());
-    this.print(this.safe('!\n'));
+    var capture, print, safe;
+    var __bind = function(func, context) {
+        return function(){ return func.apply(context, arguments); };
+      };
+    print = __bind(function(value) {
+      return this.print(value);
+    }, this);
+    capture = __bind(function(callback) {
+      return this.capture(callback);
+    }, this);
+    safe = __bind(function(value) {
+      return this.safe(value);
+    }, this);
+    print(safe('Hello, '));
+    print(this.name);
+    print(safe('.\nI\'M SHOUTING AT YOU, '));
+    print(this.name.toUpperCase());
+    print(safe('!\n'));
     return this.toString();
   }).call((function() {
     var key, out = [], obj = {

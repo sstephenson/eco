@@ -73,7 +73,7 @@ exports.Scanner = class Scanner
 
       callback ["dedent"] if @isDedentable code
       callback ["recordCode", code]
-      callback ["indent"] if @directive
+      callback ["indent", @arrow] if @directive
 
   flush: ->
     buffer  = @buffer

@@ -27,7 +27,7 @@ module.exports =
     test.same ["printString", ""], tokens.shift()
     test.same ["beginCode", print: false], tokens.shift()
     test.same ["recordCode", "for project in @projects"], tokens.shift()
-    test.same ["indent"], tokens.shift()
+    test.same ["indent", undefined], tokens.shift()
     test.done()
 
   "'-> %>' ends a code block and indents": (test) ->
@@ -35,7 +35,7 @@ module.exports =
     test.same ["printString", ""], tokens.shift()
     test.same ["beginCode", print: true], tokens.shift()
     test.same ["recordCode", "@render 'layout', ->"], tokens.shift()
-    test.same ["indent"], tokens.shift()
+    test.same ["indent", "->"], tokens.shift()
     test.done()
 
   "'=> %>' ends a code block and indents": (test) ->
@@ -43,7 +43,7 @@ module.exports =
     test.same ["printString", ""], tokens.shift()
     test.same ["beginCode", print: true], tokens.shift()
     test.same ["recordCode", "@render 'layout', =>"], tokens.shift()
-    test.same ["indent"], tokens.shift()
+    test.same ["indent", "=>"], tokens.shift()
     test.done()
 
   "'<% else: %>' dedents, begins a code block, and indents": (test) ->
@@ -52,7 +52,7 @@ module.exports =
     test.same ["beginCode", print: false], tokens.shift()
     test.same ["dedent"], tokens.shift()
     test.same ["recordCode", "else"], tokens.shift()
-    test.same ["indent"], tokens.shift()
+    test.same ["indent", undefined], tokens.shift()
     test.done()
 
   "'<% else if ...: %>' dedents, begins a code block, and indents": (test) ->
@@ -61,7 +61,7 @@ module.exports =
     test.same ["beginCode", print: false], tokens.shift()
     test.same ["dedent"], tokens.shift()
     test.same ["recordCode", "else if @projects"], tokens.shift()
-    test.same ["indent"], tokens.shift()
+    test.same ["indent", undefined], tokens.shift()
     test.done()
 
   "unexpected newline in code block": (test) ->

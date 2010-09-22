@@ -12,6 +12,7 @@ exports.Preprocessor = class Preprocessor
     @output   = ""
     @level    = 0
     @printing = no
+    @captures = []
 
   preprocess: ->
     until @scanner.done
@@ -25,7 +26,7 @@ exports.Preprocessor = class Preprocessor
 
   printString: (string) ->
     if string.length
-      @record "@print @safe #{sys.inspect string}"
+      @record "print safe #{sys.inspect string}"
 
   beginCode: (options) ->
     @printing = options.print
@@ -34,16 +35,23 @@ exports.Preprocessor = class Preprocessor
     if code isnt "end"
       if @printing
         @printing = no
-        @record "@print #{code}"
+        @record "print #{code}"
       else
         @record code
 
-  indent: ->
+  indent: (capture) ->
     @level++
+    if capture
+      @record "capture #{capture}"
+      @captures.unshift @level
+      @indent()
 
   dedent: ->
     @level--
     @fail "unexpected dedent" if @level < 0
+    if @captures[0] is @level
+      @captures.shift()
+      @dedent()
 
   fail: (message) ->
     throw "Parse error on line #{@scanner.lineNo}: #{message}"
