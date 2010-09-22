@@ -49,3 +49,14 @@ module.exports =
       test.same "Parse error on line 1: unexpected end of template", err.toString()
     test.done()
 
+  "automatic captures use the same arrow as the function definition": (test) ->
+    test.expect 2
+
+    output = preprocess "<% @foo -> %><br><% end %>"
+    test.ok output.match /capture ->/
+
+    output = preprocess "<% @foo => %><br><% end %>"
+    test.ok output.match /capture =>/
+
+    test.done()
+
