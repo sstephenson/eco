@@ -1,7 +1,7 @@
 { "name": "eco"
 , "description": "Embedded CoffeeScript templates"
 , "author": "Sam Stephenson"
-, "version": "0.1.0"
+, "version": "1.0.0"
 , "licenses": [
   { "type": "MIT"
   , "url": "http://github.com/sstephenson/eco/raw/master/LICENSE"
