@@ -31,7 +31,6 @@ module.exports =
       { name: "SCU Intranet", url: "/projects/2", description: "<p><em>On hold</em></p>" },
       { name: "Sales Template", url: "/projects/3" }
     ]
-    console.log output
     test.same fixture("projects.out.2"), output
     test.done()
 
