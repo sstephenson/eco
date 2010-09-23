@@ -20,8 +20,13 @@ Here's an Eco template:
 
 ### Installation
 
-Eco requires Node.js >= 0.2.0, CoffeeScript >= 0.9.4, and strscan >=
-1.0.0. The easiest way to install Eco is via [npm](http://github.com/isaacs/npm):
+Eco requires:
+
+* [Node.js](http://nodejs.org/) >= 0.2.0
+* [CoffeeScript](http://coffeescript.org/) >= 0.9.4
+* [strscan](http://github.com/sstephenson/strscan-js) >= 1.0.0
+
+The easiest way to install Eco is via [npm](http://github.com/isaacs/npm):
 
     $ npm install eco
 
