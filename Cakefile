@@ -18,3 +18,70 @@ task "fixtures", "Generate .coffee fixtures from .eco fixtures", ->
       basename     = path.basename filename, ".eco"
       source       = fs.readFileSync "#{dir}/#{filename}", "utf-8"
       fs.writeFileSync "#{dir}/#{basename}.coffee", preprocess source
+
+task "dist", "Generate dist/eco.js", ->
+  fs     = require("fs")
+  coffee = require("coffee-script").compile
+  minify = require("closure-compiler").compile
+
+  read = (filename) ->
+    fs.readFileSync "#{__dirname}/#{filename}", "utf-8"
+
+  stub = (identifier) -> """
+    if (typeof #{identifier} !== 'undefined' && #{identifier} != null) {
+      module.exports = #{identifier};
+    } else {
+      throw 'Cannot require \\'' + module.id + '\\': #{identifier} not found';
+    }
+  """
+
+  version = JSON.parse(read "#{__dirname}/package.json").version
+
+  modules =
+    "eco":              read "lib/eco.js"
+    "eco/compiler":     coffee read "lib/eco/compiler.coffee"
+    "eco/preprocessor": coffee read "lib/eco/preprocessor.coffee"
+    "eco/scanner":      coffee read "lib/eco/scanner.coffee"
+    "eco/util":         coffee read "lib/eco/util.coffee"
+    "strscan":          read "vendor/strscan/lib/strscan.js"
+    "coffee-script":    stub "CoffeeScript"
+
+  package = for name, source of modules
+    """
+      '#{name}': function(module, require, exports) {
+        #{source}
+      }
+    """
+
+  header = """
+    /**
+     * Eco Compiler v#{version}
+     * http://github.com/sstephenson/eco
+     *
+     * Copyright (c) 2010 Sam Stephenson
+     * Released under the MIT License
+     */
+  """
+
+  source = """
+    this.eco = (function(modules) {
+      return function require(name) {
+        var fn, module = {id: name, exports: {}};
+        if (fn = modules[name]) {
+          fn(module, require, module.exports);
+          return module.exports;
+        } else {
+          throw 'Cannot find module \\'' + name + '\\'';
+        }
+      };
+    })({
+      #{package.join ',\n'}
+    })('eco');
+  """
+
+  try
+    fs.mkdirSync "#{__dirname}/dist", 0755
+  catch err
+
+  minify source, {}, (output) ->
+    fs.writeFileSync "#{__dirname}/dist/eco.js", "#{header}\n#{output}"
