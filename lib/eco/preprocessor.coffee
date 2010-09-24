@@ -26,7 +26,7 @@ exports.Preprocessor = class Preprocessor
 
   printString: (string) ->
     if string.length
-      @record "_print _safe #{sys.inspect string}"
+      @record "__out.push #{sys.inspect string}"
 
   beginCode: (options) ->
     @options = options
@@ -35,16 +35,16 @@ exports.Preprocessor = class Preprocessor
     if code isnt "end"
       if @options.print
         if @options.safe
-          @record "_print _safe #{code}"
+          @record "__out.push #{code}"
         else
-          @record "_print #{code}"
+          @record "__out.push __sanitize #{code}"
       else
         @record code
 
   indent: (capture) ->
     @level++
     if capture
-      @record "_capture #{capture}"
+      @record "__capture #{capture}"
       @captures.unshift @level
       @indent()
 

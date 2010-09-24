@@ -1,5 +1,5 @@
-_print _safe 'Hello, '
-_print @name
-_print _safe '.\nI\'M SHOUTING AT YOU, '
-_print @name.toUpperCase()
-_print _safe '!\n'
+__out.push 'Hello, '
+__out.push __sanitize @name
+__out.push '.\nI\'M SHOUTING AT YOU, '
+__out.push __sanitize @name.toUpperCase()
+__out.push '!\n'

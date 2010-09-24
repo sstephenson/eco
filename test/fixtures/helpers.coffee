@@ -1,16 +1,16 @@
 for item in @items
-  _print _safe '\n  '
-  _print @contentTag "div", class: "item", =>
-    _capture =>
-      _print _safe '\n    '
-      _print @contentTag "span", class: "price", ->
-        _capture ->
-          _print _safe '$'
-          _print item.price
-      _print _safe '\n    '
-      _print @contentTag "span", class: "name", ->
-        _capture ->
-          _print item.name
-      _print _safe '\n  '
-  _print _safe '\n'
-_print _safe '\n'
+  __out.push '\n  '
+  __out.push __sanitize @contentTag "div", class: "item", =>
+    __capture =>
+      __out.push '\n    '
+      __out.push __sanitize @contentTag "span", class: "price", ->
+        __capture ->
+          __out.push '$'
+          __out.push __sanitize item.price
+      __out.push '\n    '
+      __out.push __sanitize @contentTag "span", class: "name", ->
+        __capture ->
+          __out.push __sanitize item.name
+      __out.push '\n  '
+  __out.push '\n'
+__out.push '\n'
