@@ -1,6 +1,5 @@
 {Scanner} = require "eco/scanner"
-{repeat}  = require "eco/util"
-sys       = require "sys"
+util      = require "eco/util"
 
 exports.preprocess = (source) ->
   preprocessor = new Preprocessor source
@@ -21,12 +20,12 @@ exports.Preprocessor = class Preprocessor
     @output
 
   record: (line) ->
-    @output += repeat "  ", @level
+    @output += util.repeat "  ", @level
     @output += line + "\n"
 
   printString: (string) ->
     if string.length
-      @record "__out.push #{sys.inspect string}"
+      @record "__out.push #{util.inspectString string}"
 
   beginCode: (options) ->
     @options = options
