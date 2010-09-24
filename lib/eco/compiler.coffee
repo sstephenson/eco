@@ -2,11 +2,13 @@ CoffeeScript = require "coffee-script"
 {preprocess} = require "eco/preprocessor"
 {indent}     = require "eco/util"
 
-exports.compile = compile = (source) ->
-  script = CoffeeScript.compile preprocess(source), noWrap: true
+exports.compile = compile = (source, options) ->
+  identifier = options?.identifier ? "module.exports"
+  identifier = "var #{identifier}" unless identifier.match(/\./)
+  script     = CoffeeScript.compile preprocess(source), noWrap: true
 
   """
-    module.exports = function(__obj) {
+    #{identifier} = function(__obj) {
       var _safe = function(value) {
         if (typeof value === 'undefined' && value == null)
           value = '';
