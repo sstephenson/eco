@@ -36,4 +36,3 @@ module.exports =
     output = eco.compile fixture("hello.eco"), identifier: "window.hello"
     test.ok output.match /^window\.hello =/
     test.done()
-

@@ -7,6 +7,17 @@ items = [
 ]
 
 module.exports =
+  "linking hello.eco": (test) ->
+    render = eco.link fixture("hello.eco")
+    test.same fixture("hello.out.1"), render name: "Sam"
+    test.done()
+
+  "linked templates can be reused": (test) ->
+    render = eco.link "Hello <%= @name %>"
+    test.same "Hello Sam", render name: "Sam"
+    test.same "Hello Josh", render name: "Josh"
+    test.done()
+
   "rendering hello.eco": (test) ->
     output = eco.render fixture("hello.eco"), name: "Sam"
     test.same fixture("hello.out.1"), output

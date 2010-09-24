@@ -47,11 +47,12 @@ exports.compile = compile = (source, options) ->
     };
   """
 
+exports.link = link = (source) ->
+  (new Function "module", compile source) module = {}
+  module.exports
+
 exports.render = (source, data) ->
-  module = {}
-  template = new Function "module", compile source
-  template module
-  module.exports data
+  (link source) data
 
 if require.extensions
   require.extensions[".eco"] = (module, filename) ->
