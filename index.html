@@ -35,7 +35,7 @@
     div.container.output textarea {
       height: 220px;
       margin-bottom: 6px;
-   }
+    }
 
     div.container div.error {
       display: none;
@@ -120,7 +120,6 @@
         } catch (e) {
           outputContainer.className = "container output error";
           outputContainer.title = e.toString();
-          console.error(e);
         }
       };
 
@@ -131,7 +130,7 @@
       window.onload = function() {
         sourceElement.focus();
         compile();
-      }
+      };
     })();
   </script>
 </body>
