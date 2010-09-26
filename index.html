@@ -22,14 +22,20 @@
     }
 
     div.container p {
-     margin-top: 0;
+      margin: 0 0 5px 0;
     }
 
     div.container textarea {
       width: 360px;
       height: 480px;
       font-family: monospace;
+      margin-bottom: 5px;
     }
+
+    div.container.output textarea {
+      height: 220px;
+      margin-bottom: 6px;
+   }
 
     div.container div.error {
       display: none;
@@ -54,8 +60,9 @@
 
 <body>
   <div class="container">
-    <p>Eco template source:</p>
-    <textarea id="eco_source">&lt;!DOCTYPE html&gt;
+    <section>
+      <p>Eco template source:</p>
+      <textarea id="eco_source">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;meta charset=&quot;utf-8&quot;&gt;
@@ -72,12 +79,20 @@
 
 &lt;/html&gt;
 </textarea>
+    </section>
   </div>
 
-  <div class="container">
-    <div class="error">Parse Error</div>
-    <p>Compiled JavaScript:</p>
-    <textarea id="eco_output" readonly></textarea>
+  <div class="container output">
+    <section>
+      <div class="error">Parse Error</div>
+      <p>Preprocessed CoffeeScript:</p>
+      <textarea id="eco_coffee" readonly></textarea>
+    </section>
+    
+    <section>
+      <p>Compiled JavaScript:</p>
+      <textarea id="eco_output" readonly></textarea>
+    </section>
   </div>
 
   <script src="http://jashkenas.github.com/coffee-script/extras/coffee-script.js"></script>
@@ -85,19 +100,25 @@
   <script>
     (function() {
       var sourceElement = document.getElementById("eco_source");
+      var coffeeElement = document.getElementById("eco_coffee");
       var outputElement = document.getElementById("eco_output");
-      var outputContainer = outputElement.parentNode;
+      var outputContainer = outputElement.parentNode.parentNode;
 
       var compile = function() {
         var source = sourceElement.value;
         try {
-          var result = eco.compile(source);
-          outputElement.value = result;
+          var coffee = eco.preprocess(source);
+          var output = eco.compile(source);
+
+          coffeeElement.value = coffee;
+          outputElement.value = output;
+
           outputElement.scrollTop = outputElement.scrollHeight;
-          outputContainer.className = "container";
+          outputContainer.className = "container output";
           outputContainer.title = "";
+
         } catch (e) {
-          outputContainer.className = "container error";
+          outputContainer.className = "container output error";
           outputContainer.title = e.toString();
           console.error(e);
         }
