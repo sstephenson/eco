@@ -2,7 +2,11 @@ CoffeeScript = require "coffee-script"
 {preprocess} = require "eco/preprocessor"
 {indent}     = require "eco/util"
 
-exports.compile = compile = (source, options) ->
+module.exports = eco = (source) ->
+  (new Function "module", compile source) module = {}
+  module.exports
+
+eco.compile = compile = (source, options) ->
   identifier = options?.identifier ? "module.exports"
   identifier = "var #{identifier}" unless identifier.match(/\./)
   script     = CoffeeScript.compile preprocess(source), noWrap: true
@@ -53,12 +57,8 @@ exports.compile = compile = (source, options) ->
     };
   """
 
-exports.link = link = (source) ->
-  (new Function "module", compile source) module = {}
-  module.exports
-
-exports.render = (source, data) ->
-  (link source) data
+eco.render = (source, data) ->
+  (eco source) data
 
 if require.extensions
   require.extensions[".eco"] = (module, filename) ->
