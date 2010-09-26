@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Interactive Eco Compiler</title>
+  <style type="text/css">
+    body {
+      width: 860px;
+      padding: 20px;
+      margin: auto;
+    }
+
+    div.container {
+      background: #eee;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-right: 20px;
+      float: left;
+    }
+
+    div.container p {
+      font-family: sans-serif;
+      margin-top: 0;
+    }
+
+    div.container textarea {
+      width: 360px;
+      height: 480px;
+      font-family: monospace;
+    }
+ </style>
+</head>
+
+<body>
+  <div class="container">
+    <p>Eco template source:</p>
+    <textarea id="eco_source">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;title&gt;Eco template&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;ul&gt;
+  &lt;% for person in @people: %&gt;
+    &lt;li&gt;&lt;%= person.name %&gt;&lt;/li&gt;
+  &lt;% end %&gt;
+  &lt;/ul&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</textarea>
+  </div>
+
+  <div class="container">
+    <p>Compiled JavaScript:</p>
+    <textarea id="eco_output" readonly></textarea>
+  </div>
+
+  <script src="http://jashkenas.github.com/coffee-script/extras/coffee-script.js"></script>
+  <script src="dist/eco.js"></script>
+  <script>
+    (function() {
+      var sourceElement = document.getElementById("eco_source");
+      var outputElement = document.getElementById("eco_output");
+      var compile = function() {
+        var source = sourceElement.value;
+        try {
+          var result = eco.compile(source);
+          outputElement.value = result;
+          outputElement.scrollTop = outputElement.scrollHeight;
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      sourceElement.onkeypress = function() {
+        setTimeout(compile, 10);
+      };
+      window.onload = function() {
+        sourceElement.focus();
+        compile();
+      }
+    })();
+  </script>
+</body>
+
+</html>
