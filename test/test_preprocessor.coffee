@@ -2,6 +2,10 @@
 {fixture}    = require "fixtures"
 
 module.exports =
+  "can be accessed as eco.preprocess": (test) ->
+    test.same fixture("hello.coffee"), require("eco").preprocess fixture("hello.eco")
+    test.done()
+
   "preprocessing fixtures/hello.eco": (test) ->
     test.same fixture("hello.coffee"), preprocess fixture("hello.eco")
     test.done()
