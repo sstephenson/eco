@@ -18,17 +18,36 @@
       padding: 20px;
       margin-right: 20px;
       float: left;
+      font-family: sans-serif;
     }
 
     div.container p {
-      font-family: sans-serif;
-      margin-top: 0;
+     margin-top: 0;
     }
 
     div.container textarea {
       width: 360px;
       height: 480px;
       font-family: monospace;
+    }
+
+    div.container div.error {
+      display: none;
+      float: right;
+      font-size: 10px;
+      border: 1px solid #800;
+      border-radius: 3px;
+      padding: 1px 3px;
+      background: #c20;
+      color: #eee;
+    }
+
+    div.container.error div.error {
+      display: block;
+    }
+
+    div.container.error textarea {
+      color: #888;
     }
  </style>
 </head>
@@ -56,6 +75,7 @@
   </div>
 
   <div class="container">
+    <div class="error">Parse Error</div>
     <p>Compiled JavaScript:</p>
     <textarea id="eco_output" readonly></textarea>
   </div>
@@ -66,19 +86,27 @@
     (function() {
       var sourceElement = document.getElementById("eco_source");
       var outputElement = document.getElementById("eco_output");
+      var outputContainer = outputElement.parentNode;
+
       var compile = function() {
         var source = sourceElement.value;
         try {
           var result = eco.compile(source);
           outputElement.value = result;
           outputElement.scrollTop = outputElement.scrollHeight;
+          outputContainer.className = "container";
+          outputContainer.title = "";
         } catch (e) {
+          outputContainer.className = "container error";
+          outputContainer.title = e.toString();
           console.error(e);
         }
       };
-      sourceElement.onkeypress = function() {
+
+      sourceElement.onkeyup = function() {
         setTimeout(compile, 10);
       };
+
       window.onload = function() {
         sourceElement.focus();
         compile();
