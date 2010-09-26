@@ -108,7 +108,7 @@
         var source = sourceElement.value;
         try {
           var coffee = eco.preprocess(source);
-          var output = eco.compile(source);
+          var output = eco.compile(source, { identifier: "ecoTemplate" });
 
           coffeeElement.value = coffee;
           outputElement.value = output;
