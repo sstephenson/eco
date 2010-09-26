@@ -6,30 +6,69 @@
   <title>Interactive Eco Compiler</title>
   <style type="text/css">
     body {
+      font-family: Helvetica, sans-serif;
       width: 860px;
       padding: 20px;
       margin: auto;
     }
 
     div.container {
-      background: #eee;
-      border: 1px solid #ccc;
+      position: relative;
+      background: #eef;
+      border: 1px solid #999;
       border-radius: 10px;
       padding: 20px;
-      margin-right: 20px;
+      margin-right: 12px;
       float: left;
       font-family: sans-serif;
+      z-index: 2;
+    }
+
+    div.container.output {
+      background: #f0f0f0;
+      border-color: #ddd;
+      z-index: 1;
+    }
+
+    div.container div.arrow {
+      color: #eef;
+      position: absolute;
+      font-size: 50px;
+      right: -28px;
+      top: 50px;
+      -webkit-text-stroke: 1px #999;
+      -moz-text-stroke: 1px #999;
+      z-index: 1;
+    }
+
+    div.container div.mask {
+      position: absolute;
+      background: #eef;
+      width: 20px;
+      height: 50px;
+      right: 0;
+      top: 50px;
+      z-index: 2;
     }
 
     div.container p {
       margin: 0 0 5px 0;
+      color: #000;
+      font-weight: bold;
+    }
+
+    div.container.output p {
+      color: #888;
+      font-weight: normal;
     }
 
     div.container textarea {
+      position: relative;
       width: 360px;
       height: 480px;
       font-family: monospace;
       margin-bottom: 5px;
+      z-index: 3;
     }
 
     div.container.output textarea {
@@ -41,6 +80,7 @@
       display: none;
       float: right;
       font-size: 10px;
+      font-weight: bold;
       border: 1px solid #800;
       border-radius: 3px;
       padding: 1px 3px;
@@ -60,6 +100,8 @@
 
 <body>
   <div class="container">
+    <div class="arrow">▶</div>
+    <div class="mask"></div>
     <section>
       <p>Eco template source:</p>
       <textarea id="eco_source">&lt;!DOCTYPE html&gt;
