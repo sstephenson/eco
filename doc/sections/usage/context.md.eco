@@ -1,0 +1,9 @@
+## The context object
+
+The context object you pass to `eco.render()` becomes the value of
+`this` inside your template. You can use CoffeeScript's `@` sigil to
+easily access properties and call helper methods on the context
+object.
+
+    eco.render "<p><%%= @description %></p>",
+      description: "HTML 5 mobile app"

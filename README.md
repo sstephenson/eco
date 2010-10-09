@@ -17,8 +17,7 @@ Here's an Eco template:
       No projects
     <% end %>
 
-
-### Installation
+# Installation
 
 Eco requires:
 
@@ -30,8 +29,7 @@ The easiest way to install Eco is via [npm](http://github.com/isaacs/npm):
 
     $ npm install eco
 
-
-### Usage
+# Usage
 
 Use `eco.render()` to render your templates. The first argument is the
 template source as a string. The second argument is the context object
@@ -49,8 +47,7 @@ which contains your view state and any helper methods you want to call.
 Eco is fully synchronous. If your template needs to access data from
 asynchronous operations, perform those first before calling `render`.
 
-
-### Quick reference
+## Quick reference
 
 * `<% expression %>`: Evaluate a CoffeeScript expression without
   printing its return value.
@@ -63,8 +60,7 @@ asynchronous operations, perform those first before calling `render`.
 * `<%= @helper() %>`: Call the helper method `helper` from the context
   object passed to `render`, then print its escaped return value.
 
-
-### A note about whitespace
+## A note about whitespace
 
 Since CoffeeScript is whitespace-sensitive, but your templates aren't,
 Eco code tags that begin an indented CoffeeScript block are suffixed
@@ -92,8 +88,7 @@ first. Eco handles that for you automatically:
       Archived
     <% end %>
 
-
-### The context object
+## The context object
 
 The context object you pass to `eco.render()` becomes the value of
 `this` inside your template. You can use CoffeeScript's `@` sigil to
@@ -103,8 +98,7 @@ object.
     eco.render "<p><%= @description %></p>",
       description: "HTML 5 mobile app"
 
-
-### Helpers
+## Helpers
 
 Helper methods on your context object can access other properties on
 the context object in the same way they're accessed in the template:
@@ -117,8 +111,7 @@ through `this`, or with the `@` sigil.
       translate: (key) ->
         translations[@language][key]
 
-
-### Escaping and unescaping
+## Escaping and unescaping
 
 When you print an expression in a template with `<%= ... %>`, its
 value is HTML-escaped. For example,
@@ -157,8 +150,7 @@ would render:
 
     <a href='/projects/4'>Crate &amp; Barrel</a>
 
-
-### Custom `escape` helpers
+## Custom escape helpers
 
 By default, Eco's `escape` method takes a string and returns an
 HTML-escaped string. You can override this behavior to escape for
@@ -172,8 +164,7 @@ would return:
 
     From: Sam Stephenson <sstephenson@gmail.com>
 
-
-### Blocks and capturing
+## Blocks and capturing
 
 You can capture blocks of a template by wrapping them in a function
 definition. For example, rendering this template:
@@ -219,7 +210,7 @@ optimization, for when you are certain the capture body will not need
 to reference properties or helper methods on the context object.
 
 
-### Contributing
+# Contributing
 
 You can check out the Eco source code from GitHub:
 
@@ -230,8 +221,7 @@ To run Eco's test suite, install
 
 Report bugs on the [GitHub issue tracker](http://github.com/sstephenson/eco/issues).
 
-
-### License (MIT)
+# License (MIT)
 
 Copyright (c) 2010 Sam Stephenson <sstephenson@gmail.com>
 
@@ -254,8 +244,8 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-### Special thanks
+# Special thanks
 
 * Jeremy Ashkenas <jashkenas@gmail.com>
 * Josh Peek <josh@joshpeek.com>
+

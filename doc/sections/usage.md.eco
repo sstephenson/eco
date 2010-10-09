@@ -1,0 +1,24 @@
+# Usage
+
+Use `eco.render()` to render your templates. The first argument is the
+template source as a string. The second argument is the context object
+which contains your view state and any helper methods you want to call.
+
+    eco = require "eco"
+    fs  = require "fs"
+
+    template = fs.readFileSync __dirname + "/views/projects.html.eco", "utf-8"
+    console.log eco.render template, projects: [
+      { name: "Mobile app", url: "/projects/1", description: "Iteration 1" },
+      { name: "Home page redesign", url: "/projects/2" }
+    ]
+
+Eco is fully synchronous. If your template needs to access data from
+asynchronous operations, perform those first before calling `render`.
+
+<%- @include "sections/usage/quick_reference" %>
+<%- @include "sections/usage/whitespace" %>
+<%- @include "sections/usage/context" %>
+<%- @include "sections/usage/helpers" %>
+<%- @include "sections/usage/escaping" %>
+<%- @include "sections/usage/capturing" %>

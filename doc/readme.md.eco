@@ -1,0 +1,9 @@
+Eco: Embedded CoffeeScript templates
+====================================
+
+<%- @include "sections/introduction" %>
+<%- @include "sections/installation" %>
+<%- @include "sections/usage" %>
+<%- @include "sections/contributing" %>
+<%- @include "sections/license" %>
+<%- @include "sections/thanks" %>

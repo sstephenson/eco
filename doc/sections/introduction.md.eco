@@ -1,0 +1,15 @@
+Eco lets you embed [CoffeeScript](http://coffeescript.org/) logic in
+your markup. It's like EJS and ERB, but with CoffeeScript inside the
+`<%% ... %>`. Use it from [Node.js](http://nodejs.org/) to render your
+application's views.
+
+Here's an Eco template:
+
+    <%% if @projects.length: %>
+      <%% for project in @projects: %>
+        <a href="<%%= project.url %>"><%%= project.name %></a>
+        <p><%%= project.description %></p>
+      <%% end %>
+    <%% else: %>
+      No projects
+    <%% end %>

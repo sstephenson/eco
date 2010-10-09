@@ -1,0 +1,12 @@
+## Quick reference
+
+* `<%% expression %>`: Evaluate a CoffeeScript expression without
+  printing its return value.
+* `<%%= expression %>`: Evaluate a CoffeeScript expression, escape its
+  return value, and print it.
+* `<%%- expression %>`: Evaluate a CoffeeScript expression and print
+  its return value without escaping it.
+* `<%%= @property %>`: Print the escaped value of the property
+  `property` from the context object passed to `render`.
+* `<%%= @helper() %>`: Call the helper method `helper` from the context
+  object passed to `render`, then print its escaped return value.
