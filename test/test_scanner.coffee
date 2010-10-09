@@ -70,6 +70,13 @@ module.exports =
     test.same ["indent", undefined], tokens.shift()
     test.done()
 
+  "<%% prints an escaped <% in data mode": (test) ->
+    tokens = scan "a <%% b <%= '<%%' %>"
+    test.same ["printString", "a <% b "], tokens.shift()
+    test.same ["beginCode", print: true, safe: false], tokens.shift()
+    test.same ["recordCode", "'<%%'"], tokens.shift()
+    test.done()
+
   "unexpected newline in code block": (test) ->
     tokens = scan "foo\nhello <% do 'thing'\n %>"
     test.same ["printString", "foo\nhello "], tokens.shift()

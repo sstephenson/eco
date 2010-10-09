@@ -10,7 +10,7 @@ exports.scan = (source) ->
 
 exports.Scanner = class Scanner
   @modePatterns: {
-    data: /(.*?)(<%(([=-])?)|\n|$)/
+    data: /(.*?)(<%%|<%(([=-])?)|\n|$)/
     code: /(.*?)(((:|(->|=>))\s*)?%>|\n|$)/
   }
 
@@ -52,7 +52,11 @@ exports.Scanner = class Scanner
     @arrow     = @scanner.getCapture 4
 
   scanData: (callback) ->
-    if @tail is "\n"
+    if @tail is "<%%"
+      @buffer += "<%"
+      @scan callback
+
+    else if @tail is "\n"
       @buffer += @tail
       @lineNo++
       @scan callback

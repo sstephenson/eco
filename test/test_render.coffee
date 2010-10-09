@@ -88,3 +88,7 @@ module.exports =
     test.same "", eco.render "<%= @safe @x %>"
     test.same "", eco.render "<%- @x %>"
     test.done()
+
+  "rendering an escaped <%": (test) ->
+    test.same "<%", eco.render "<%%"
+    test.done()
