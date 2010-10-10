@@ -1,11 +1,12 @@
 CoffeeScript = require "coffee-script"
+{preprocess} = require "eco/preprocessor"
 {indent}     = require "eco/util"
 
 module.exports = eco = (source) ->
   (new Function "module", compile source) module = {}
   module.exports
 
-eco.preprocess = preprocess = require("eco/preprocessor").preprocess
+eco.preprocess = preprocess
 
 eco.compile = compile = (source, options) ->
   identifier = options?.identifier ? "module.exports"

@@ -1,20 +1,20 @@
 {StringScanner} = require "strscan"
 {trim}          = require "eco/util"
 
-exports.scan = (source) ->
-  tokens  = []
-  scanner = new Scanner source
-  until scanner.done
-    scanner.scan (token) -> tokens.push token
-  tokens
-
-exports.Scanner = class Scanner
+module.exports = class Scanner
   @modePatterns: {
     data: /(.*?)(<%%|<%(([=-])?)|\n|$)/
     code: /(.*?)(((:|(->|=>))\s*)?%>|\n|$)/
   }
 
   @dedentablePattern: /^(end|when|else|catch|finally)(?:\W|$)/
+
+  @scan: (source) ->
+    tokens  = []
+    scanner = new Scanner source
+    until scanner.done
+      scanner.scan (token) -> tokens.push token
+    tokens
 
   constructor: (source) ->
     @source  = source.replace /\r\n?/g, "\n"

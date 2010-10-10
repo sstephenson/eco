@@ -1,11 +1,11 @@
-{Scanner} = require "eco/scanner"
-util      = require "eco/util"
+Scanner = require "eco/scanner"
+util    = require "eco/util"
 
-exports.preprocess = (source) ->
-  preprocessor = new Preprocessor source
-  preprocessor.preprocess()
+module.exports = class Preprocessor
+  @preprocess: (source) ->
+    preprocessor = new Preprocessor source
+    preprocessor.preprocess()
 
-exports.Preprocessor = class Preprocessor
   constructor: (source) ->
     @scanner  = new Scanner source
     @output   = ""
