@@ -38,7 +38,7 @@ module.exports =
     output = eco.render fixture("helpers.eco"),
       items: items
       contentTag: (tagName, attributes, callback) ->
-        attrs = " #{name}=\"#{value}\"" for name, value of attributes
+        attrs = (" #{name}=\"#{value}\"" for name, value of attributes)
         @safe "<#{tagName}#{attrs.join("")}>#{callback()}</#{tagName}>"
 
     test.same fixture("helpers.out.1"), output

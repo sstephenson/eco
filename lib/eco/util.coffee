@@ -3,7 +3,7 @@ exports.repeat = repeat = (string, count) ->
 
 exports.indent = indent = (string, width) ->
   space = repeat " ", width
-  lines = space + line for line in string.split "\n"
+  lines = (space + line for line in string.split "\n")
   lines.join "\n"
 
 exports.trim = trim = (string) ->
