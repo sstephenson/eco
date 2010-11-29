@@ -46,7 +46,7 @@ task "dist", "Generate dist/eco.js", ->
     }
   """
 
-  version = JSON.parse(read "#{__dirname}/package.json").version
+  version = JSON.parse(read "package.json").version
 
   modules =
     "eco":              read "lib/eco.js"
