@@ -2,9 +2,9 @@ require.paths.unshift "#{__dirname}/lib"
 
 task "test", "Run tests", ->
   require.paths.unshift "#{__dirname}/test/lib"
-  {testrunner} = require "nodeunit"
   process.chdir __dirname
-  testrunner.run ["test"]
+  {reporters} = require 'nodeunit'
+  reporters.default.run ['test']
 
 task "fixtures", "Generate .coffee fixtures from .eco fixtures", ->
   fs   = require "fs"
