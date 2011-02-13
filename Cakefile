@@ -1,14 +1,19 @@
 require.paths.unshift "#{__dirname}/lib"
+{exec} = require 'child_process'
+
+build = (callback) ->
+  exec 'coffee -co lib src', (err, stdout, stderr) ->
+    console.warn stderr if stderr
+    callback?() unless err
 
 task "build", "Build lib/eco/ from src/eco/", ->
-  require('child_process').exec 'coffee -co lib src', (err, stdout, stderr) ->
-    console.warn stderr if stderr
+  build()
 
 task "test", "Run tests", ->
-  require.paths.unshift "#{__dirname}/test/lib"
-  process.chdir __dirname
-  {reporters} = require 'nodeunit'
-  reporters.default.run ['test']
+  build ->
+    require.paths.unshift "#{__dirname}/test/lib"
+    {reporters} = require 'nodeunit'
+    reporters.default.run ['test']
 
 task "fixtures", "Generate .coffee fixtures from .eco fixtures", ->
   fs   = require "fs"
