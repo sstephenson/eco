@@ -27,4 +27,4 @@ exports.inspectString = (string) ->
       code = character.charCodeAt(0).toString(16)
       code = "0#{code}" if code.length is 1
       "\\u00#{code}"
-  "'#{contents.replace /'/g, '\\\''}'"
+  "'" + contents.replace(/'/g, '\\\'') + "'"
