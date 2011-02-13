@@ -6,13 +6,8 @@
   { "type": "MIT"
   , "url": "http://github.com/sstephenson/eco/raw/master/LICENSE"
   }]
-, "modules":
-  { "index": "./lib/eco"
-  , "compiler": "./lib/eco/compiler"
-  , "preprocessor": "./lib/eco/preprocessor"
-  , "scanner": "./lib/eco/scanner"
-  , "util": "./lib/eco/util"
-  }
+, "directories": {"lib": "./lib/eco"}
+, "main": "./lib/eco"
 , "repository":
   { "type": "git"
   , "url": "http://github.com/sstephenson/eco.git"

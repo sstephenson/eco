@@ -1,5 +1,8 @@
 require.paths.unshift "#{__dirname}/lib"
 
+task "build", "Build lib/eco/ from src/eco/", ->
+  require('child_process').exec 'coffee -co lib src'
+
 task "test", "Run tests", ->
   require.paths.unshift "#{__dirname}/test/lib"
   process.chdir __dirname
