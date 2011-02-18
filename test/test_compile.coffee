@@ -1,5 +1,5 @@
-eco       = require "eco"
-{fixture} = require "fixtures"
+eco       = require ".."
+{fixture} = require "./lib/fixtures"
 
 module.exports =
   "compiling fixtures/hello.eco": (test) ->

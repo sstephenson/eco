@@ -1,5 +1,5 @@
-eco       = require "eco"
-{fixture} = require "fixtures"
+eco       = require ".."
+{fixture} = require "./lib/fixtures"
 
 module.exports =
   "requiring eco templates as modules": (test) ->

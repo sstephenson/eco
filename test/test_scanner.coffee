@@ -1,5 +1,4 @@
-require.paths.unshift __dirname + "/../lib"
-{scan} = require "eco/scanner"
+{scan} = require "../lib/eco/scanner"
 
 module.exports =
   "'<%' begins a code block": (test) ->

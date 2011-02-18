@@ -1,4 +1,3 @@
-require.paths.unshift "#{__dirname}/lib"
 {exec} = require 'child_process'
 
 build = (callback) ->
@@ -11,7 +10,6 @@ task "build", "Build lib/eco/ from src/eco/", ->
 
 task "test", "Run tests", ->
   build ->
-    require.paths.unshift "#{__dirname}/test/lib"
     {reporters} = require 'nodeunit'
     reporters.default.run ['test']
 

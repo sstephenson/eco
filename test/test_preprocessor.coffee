@@ -1,9 +1,9 @@
-{preprocess} = require "eco/preprocessor"
-{fixture}    = require "fixtures"
+{preprocess} = require "../lib/eco/preprocessor"
+{fixture}    = require "./lib/fixtures"
 
 module.exports =
   "can be accessed as eco.preprocess": (test) ->
-    test.same fixture("hello.coffee"), require("eco").preprocess fixture("hello.eco")
+    test.same fixture("hello.coffee"), require("..").preprocess fixture("hello.eco")
     test.done()
 
   "preprocessing fixtures/hello.eco": (test) ->

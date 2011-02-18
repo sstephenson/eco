@@ -1,5 +1,5 @@
-eco       = require "eco"
-{fixture} = require "fixtures"
+eco       = require ".."
+{fixture} = require "./lib/fixtures"
 
 items = [
   { name: "Caprese", price: "5.25"},
