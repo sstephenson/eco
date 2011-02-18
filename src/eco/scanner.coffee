@@ -1,5 +1,5 @@
 {StringScanner} = require "strscan"
-{trim}          = require "eco/util"
+{trim}          = require "./util"
 
 module.exports = class Scanner
   @modePatterns: {

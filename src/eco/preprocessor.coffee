@@ -1,5 +1,5 @@
-Scanner = require "eco/scanner"
-util    = require "eco/util"
+Scanner = require "./scanner"
+util    = require "./util"
 
 module.exports = class Preprocessor
   @preprocess: (source) ->
