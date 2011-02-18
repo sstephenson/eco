@@ -1,3 +1,0 @@
-[submodule "vendor/strscan"]
-	path = vendor/strscan
-	url = http://github.com/sstephenson/strscan-js.git
