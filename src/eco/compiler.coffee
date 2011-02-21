@@ -1,6 +1,6 @@
 CoffeeScript = require "coffee-script"
-{preprocess} = require "eco/preprocessor"
-{indent}     = require "eco/util"
+{preprocess} = require "./preprocessor"
+{indent}     = require "./util"
 
 exports.compile = compile = (source) ->
   script = CoffeeScript.compile preprocess(source), noWrap: true

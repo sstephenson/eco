@@ -1,5 +1,5 @@
-{Scanner} = require "eco/scanner"
-{repeat}  = require "eco/util"
+{Scanner} = require "./scanner"
+{repeat}  = require "./util"
 sys       = require "sys"
 
 exports.preprocess = (source) ->

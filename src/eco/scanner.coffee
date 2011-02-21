@@ -1,5 +1,5 @@
 {StringScanner} = require "strscan"
-{trim}          = require "eco/util"
+{trim}          = require "./util"
 
 exports.scan = (source) ->
   tokens  = []

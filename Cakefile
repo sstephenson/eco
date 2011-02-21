@@ -16,8 +16,8 @@ task "fixtures", "Generate .coffee fixtures from .eco fixtures", ->
 
   for filename in fs.readdirSync dir
     if path.extname(filename) is ".eco"
-      eco          = require "eco"
-      {preprocess} = require "eco/preprocessor"
+      eco          = require "./lib/eco"
+      {preprocess} = require "./lib/eco/preprocessor"
       basename     = path.basename filename, ".eco"
       source       = fs.readFileSync "#{dir}/#{filename}", "utf-8"
       fs.writeFileSync "#{dir}/#{basename}.coffee", preprocess source
