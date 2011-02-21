@@ -7,13 +7,13 @@
   , "url": "http://github.com/sstephenson/eco/raw/master/LICENSE"
   }]
 , "directories": {"lib": "./lib"}
-, "main": "./lib/eco"
+, "main": "./lib/eco/index.js"
 , "repository":
   { "type": "git"
   , "url": "http://github.com/sstephenson/eco.git"
   }
 , "dependencies":
-  { "strscan": ">=1.0.0"
-  , "coffee-script": ">=0.9.4"
+  { "strscan": ">=1.0.1"
+  , "coffee-script": ">=1.0.1"
   }
 }
