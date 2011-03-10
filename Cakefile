@@ -1,9 +1,15 @@
 {exec} = require 'child_process'
 
-build = (callback) ->
-  exec 'coffee -co lib src', (err, stdout, stderr) ->
+run = (command, callback) ->
+  exec command, (err, stdout, stderr) ->
     console.warn stderr if stderr
     callback?() unless err
+
+build = (callback) ->
+  run 'coffee -co lib src', callback
+
+bundle = (callback) ->
+  run 'npm --loglevel silent bundle', callback
 
 task "build", "Build lib/eco/ from src/eco/", ->
   build()
@@ -55,51 +61,52 @@ task "dist", "Generate dist/eco.js", ->
 
   version = JSON.parse(read "package.json").version
 
-  modules =
-    "eco":              read "lib/eco.js"
-    "eco/compiler":     coffee read "lib/eco/compiler.coffee"
-    "eco/preprocessor": coffee read "lib/eco/preprocessor.coffee"
-    "eco/scanner":      coffee read "lib/eco/scanner.coffee"
-    "eco/util":         coffee read "lib/eco/util.coffee"
-    "strscan":          read "vendor/strscan/lib/strscan.js"
-    "coffee-script":    stub "CoffeeScript"
+  build -> bundle ->
+    modules =
+      "eco":              read "lib/eco/index.js"
+      "./compiler":       read "lib/eco/compiler.js"
+      "./preprocessor":   read "lib/eco/preprocessor.js"
+      "./scanner":        read "lib/eco/scanner.js"
+      "./util":           read "lib/eco/util.js"
+      "strscan":          read "node_modules/strscan/lib/strscan.js"
+      "coffee-script":    stub "CoffeeScript"
 
-  package = for name, source of modules
-    """
-      '#{name}': function(module, require, exports) {
-        #{source}
-      }
-    """
-
-  header = """
-    /**
-     * Eco Compiler v#{version}
-     * http://github.com/sstephenson/eco
-     *
-     * Copyright (c) 2010 Sam Stephenson
-     * Released under the MIT License
-     */
-  """
-
-  source = """
-    this.eco = (function(modules) {
-      return function require(name) {
-        var fn, module = {id: name, exports: {}};
-        if (fn = modules[name]) {
-          fn(module, require, module.exports);
-          return module.exports;
-        } else {
-          throw 'Cannot find module \\'' + name + '\\'';
+    package = for name, source of modules
+      """
+        '#{name}': function(module, require, exports) {
+          #{source}
         }
-      };
-    })({
-      #{package.join ',\n'}
-    })('eco');
-  """
+      """
 
-  try
-    fs.mkdirSync "#{__dirname}/dist", 0755
-  catch err
+    header = """
+      /**
+       * Eco Compiler v#{version}
+       * http://github.com/sstephenson/eco
+       *
+       * Copyright (c) 2011 Sam Stephenson
+       * Released under the MIT License
+       */
+    """
 
-  minify source, {}, (output) ->
-    fs.writeFileSync "#{__dirname}/dist/eco.js", "#{header}\n#{output}"
+    source = """
+      this.eco = (function(modules) {
+        return function require(name) {
+          var fn, module = {id: name, exports: {}};
+          if (fn = modules[name]) {
+            fn(module, require, module.exports);
+            return module.exports;
+          } else {
+            throw 'Cannot find module \\'' + name + '\\'';
+          }
+        };
+      })({
+        #{package.join ',\n'}
+      })('eco');
+    """
+
+    try
+      fs.mkdirSync "#{__dirname}/dist", 0755
+    catch err
+
+    minify source, {}, (output) ->
+      fs.writeFileSync "#{__dirname}/dist/eco.js", "#{header}\n#{output}"
