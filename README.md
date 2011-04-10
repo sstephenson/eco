@@ -139,7 +139,7 @@ can be printed in `<%= ... %>` tags without being escaped. You can use
 this in conjunction with the context object's `escape` method to
 selectively sanitize parts of the string. For example,
 
-    eco.render "<%= linkTo @project %>",
+    eco.render "<%= @linkTo @project %>",
       project: { id: 4, name: "Crate & Barrel" }
       linkTo: (project) ->
         url  = "/projects/#{project.id}"
@@ -158,7 +158,7 @@ formats other than HTML, or to bypass escaping entirely. For example,
 
     eco.render "From: <%= @address %>",
       address: "Sam Stephenson <sstephenson@gmail.com>"
-      escape:  (string) -> string      
+      escape:  (string) -> string
 
 would return:
 
