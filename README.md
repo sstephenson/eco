@@ -8,7 +8,7 @@ application's views on the server side, or compile your templates
 to JavaScript with the `eco` command-line utility and use them to
 dynamically render views in the browser.
 
-Here's an Eco template:
+Here's how an Eco template looks:
 
     <% if @projects.length: %>
       <% for project in @projects: %>
@@ -37,7 +37,9 @@ which contains your view state and any helper methods you want to call.
 Eco is fully synchronous. If your template needs to access data from
 asynchronous operations, perform those first before calling `render`.
 
-## Quick reference
+## Language reference
+
+Eco's syntax is simple:
 
 * `<% expression %>`: Evaluate a CoffeeScript expression without
   printing its return value.
