@@ -9,7 +9,7 @@ build = (callback) ->
   run 'coffee -co lib src', callback
 
 bundle = (callback) ->
-  run 'npm --loglevel silent bundle', callback
+  run 'npm install', callback
 
 task "build", "Build lib/eco/ from src/eco/", ->
   build()
@@ -44,24 +44,24 @@ task "doc", "Generate documentation", ->
   fs.writeFileSync "#{__dirname}/README.md", render "readme"
 
 task "dist", "Generate dist/eco.js", ->
-  fs     = require("fs")
-  coffee = require("coffee-script").compile
-  minify = require("closure-compiler").compile
-
-  read = (filename) ->
-    fs.readFileSync "#{__dirname}/#{filename}", "utf-8"
-
-  stub = (identifier) -> """
-    if (typeof #{identifier} !== 'undefined' && #{identifier} != null) {
-      module.exports = #{identifier};
-    } else {
-      throw 'Cannot require \\'' + module.id + '\\': #{identifier} not found';
-    }
-  """
-
-  version = JSON.parse(read "package.json").version
-
   build -> bundle ->
+    fs     = require("fs")
+    coffee = require("coffee-script").compile
+    uglify = require("uglify-js")
+
+    read = (filename) ->
+      fs.readFileSync "#{__dirname}/#{filename}", "utf-8"
+
+    stub = (identifier) -> """
+      if (typeof #{identifier} !== 'undefined' && #{identifier} != null) {
+        module.exports = #{identifier};
+      } else {
+        throw 'Cannot require \\'' + module.id + '\\': #{identifier} not found';
+      }
+    """
+
+    version = JSON.parse(read "package.json").version
+
     modules =
       "eco":              read "lib/eco/index.js"
       "./compiler":       read "lib/eco/compiler.js"
@@ -88,7 +88,7 @@ task "dist", "Generate dist/eco.js", ->
        */
     """
 
-    source = """
+    source = uglify """
       this.eco = (function(modules) {
         return function require(name) {
           var fn, module = {id: name, exports: {}};
@@ -108,5 +108,4 @@ task "dist", "Generate dist/eco.js", ->
       fs.mkdirSync "#{__dirname}/dist", 0755
     catch err
 
-    minify source, {}, (output) ->
-      fs.writeFileSync "#{__dirname}/dist/eco.js", "#{header}\n#{output}"
+    fs.writeFileSync "#{__dirname}/dist/eco.js", "#{header}\n#{source}"
