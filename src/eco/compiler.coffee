@@ -3,18 +3,15 @@ CoffeeScript = require "coffee-script"
 {indent}     = require "./util"
 
 module.exports = eco = (source) ->
-  (new Function "module", compile source) module = {}
-  module.exports
+  do new Function "return #{compile source}"
 
 eco.preprocess = preprocess
 
-eco.compile = compile = (source, options) ->
-  identifier = options?.identifier ? "module.exports"
-  identifier = "var #{identifier}" unless identifier.match(/\./)
-  script     = CoffeeScript.compile preprocess(source), noWrap: true
+eco.compile = compile = (source) ->
+  script = CoffeeScript.compile preprocess(source), noWrap: true
 
   """
-    #{identifier} = function(__obj) {
+    function(__obj) {
       if (!__obj) __obj = {};
       var __out = [], __capture = function(callback) {
         var out = __out, result;
@@ -65,7 +62,7 @@ eco.render = (source, data) ->
 if require.extensions
   require.extensions[".eco"] = (module, filename) ->
     source = require("fs").readFileSync filename, "utf-8"
-    module._compile compile(source), filename
+    module._compile "module.exports = #{compile source}", filename
 
 else if require.registerExtension
   require.registerExtension ".eco", compile
