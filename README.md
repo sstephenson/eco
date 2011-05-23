@@ -4,7 +4,9 @@ Eco: Embedded CoffeeScript templates
 Eco lets you embed [CoffeeScript](http://coffeescript.org/) logic in
 your markup. It's like EJS and ERB, but with CoffeeScript inside the
 `<% ... %>`. Use it from [Node.js](http://nodejs.org/) to render your
-application's views.
+application's views on the server side, or compile your templates
+to JavaScript with the `eco` command-line utility and use them to
+dynamically render views in the browser.
 
 Here's an Eco template:
 
