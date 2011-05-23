@@ -11,7 +11,7 @@ build = (callback) ->
 bundle = (callback) ->
   run 'npm install', callback
 
-task "build", "Build lib/eco/ from src/eco/", ->
+task "build", "Build lib/ from src/", ->
   build()
 
 task "test", "Run tests", ->
@@ -63,11 +63,11 @@ task "dist", "Generate dist/eco.js", ->
     version = JSON.parse(read "package.json").version
 
     modules =
-      "eco":              read "lib/eco/index.js"
-      "./compiler":       read "lib/eco/compiler.js"
-      "./preprocessor":   read "lib/eco/preprocessor.js"
-      "./scanner":        read "lib/eco/scanner.js"
-      "./util":           read "lib/eco/util.js"
+      "eco":              read "lib/index.js"
+      "./compiler":       read "lib/compiler.js"
+      "./preprocessor":   read "lib/preprocessor.js"
+      "./scanner":        read "lib/scanner.js"
+      "./util":           read "lib/util.js"
       "strscan":          read "node_modules/strscan/lib/strscan.js"
       "coffee-script":    stub "CoffeeScript"
 

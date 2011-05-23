@@ -1,4 +1,4 @@
-{preprocess} = require "../lib/eco/preprocessor"
+{preprocess} = require "../lib/preprocessor"
 {fixture}    = require "./lib/fixtures"
 
 module.exports =

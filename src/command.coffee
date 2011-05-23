@@ -1,5 +1,5 @@
 fs  = "fs"
-eco = require "eco"
+eco = require "."
 
 exports.run = ->
   source = ""

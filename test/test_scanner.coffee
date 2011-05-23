@@ -1,4 +1,4 @@
-{scan} = require "../lib/eco/scanner"
+{scan} = require "../lib/scanner"
 
 module.exports =
   "'<%' begins a code block": (test) ->

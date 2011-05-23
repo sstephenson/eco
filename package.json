@@ -6,8 +6,7 @@
   { "type": "MIT"
   , "url": "http://github.com/sstephenson/eco/raw/master/LICENSE"
   }]
-, "directories": {"lib": "./lib"}
-, "main": "./lib/eco/index.js"
+, "main": "./lib/index.js"
 , "repository":
   { "type": "git"
   , "url": "http://github.com/sstephenson/eco.git"
