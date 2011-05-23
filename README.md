@@ -62,10 +62,7 @@ asynchronous operations, perform those first before calling `render`.
 
 ## A note about whitespace
 
-Since CoffeeScript is whitespace-sensitive, but your templates aren't,
-Eco code tags that begin an indented CoffeeScript block are suffixed
-with a colon. To indicate the end of an indented block, use the
-special tag `<% end %>`. For example:
+CoffeeScript is whitespace-sensitive, but your templates aren't. Eco code tags that begin an indented CoffeeScript block are suffixed with a colon. To indicate the end of an indented block, use the special tag `<% end %>`. For example:
 
     <% if @project.isOnHold(): %>
       On Hold
