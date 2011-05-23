@@ -53,7 +53,7 @@ eco.compile = compile = (source) ->
       }).call(__obj);
       __obj.safe = __objSafe, __obj.escape = __escape;
       return __out.join('');
-    };
+    }
   """
 
 eco.render = (source, data) ->
