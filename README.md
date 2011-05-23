@@ -51,6 +51,11 @@ Eco's syntax is simple:
   `property` from the context object passed to `render`.
 * `<%= @helper() %>`: Call the helper method `helper` from the context
   object passed to `render`, then print its escaped return value.
+* `<% @helper -> %>...<% end %>`: Call the helper method `helper` with
+  a function as its first argument. When invoked, the function will
+  capture and return the content `...` inside the tag.
+* `<%%` and `%%>` will result in a literal `<%` and `%>` in the
+  rendered template, respectively.
 
 ## A note about whitespace
 
