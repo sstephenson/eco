@@ -1,7 +1,7 @@
 fs   = require "fs"
 path = require "path"
 sys  = require "sys"
-eco  = require "."
+eco  = require ".."
 
 {exec} = require "child_process"
 {indent} = require "./util"
