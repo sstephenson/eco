@@ -20,7 +20,7 @@ printUsage = ->
   process.exit 1
 
 printVersion = ->
-  package = JSON.parse fs.readFileSync __dirname + "/../../package.json", "utf8"
+  package = JSON.parse fs.readFileSync __dirname + "/../package.json", "utf8"
   console.error "Eco version #{package.version}"
   process.exit 0
 
@@ -62,40 +62,46 @@ read = (stream, callback) ->
 each = ([values...], callback) ->
   do proceed = -> callback values.shift(), proceed
 
-compileFile = (infile, outdir, callback) ->
-  dirname  = path.dirname infile
+compileFile = (infile, callback) ->
   basename = path.basename(infile).replace /(\.eco)?$/, ""
-  outdir or= dirname
-  outfile  = "#{path.join outdir, basename}.js"
 
   fs.readFile infile, "utf8", (err, source) ->
     return callback err if err
     template = indent eco.compile(source), 2
 
-    output = """
+    callback null, basename, """
       (function() {
         this.ecoTemplates || (this.ecoTemplates = {});
         this.ecoTemplates[#{JSON.stringify basename}] = #{template.slice 2};
       }).call(this);
     """
 
-    fs.writeFile outfile, output, "utf8", (err) ->
-      return callback err if err
-      callback null, outfile
-
-exports.run = ->
-  options = parseOptions process.argv.slice 2
+exports.run = (args = process.argv.slice 2) ->
+  options = parseOptions args
 
   if options.stdio
     printUsage() if options.files.length or options.output
     process.openStdin()
     read process.stdin, (source) ->
       sys.puts eco.compile source
+
+  else if options.print
+    printUsage() if options.files.length isnt 1 or options.output
+    compileFile options.files[0], (err, basename, result) ->
+      throw err if err
+      sys.puts result
+
   else
     printUsage() unless options.files.length
     each options.files, (infile, proceed) ->
-      return unless infile
-      compileFile infile, options.output, (err, outfile) ->
+      return unless infile?
+      compileFile infile, (err, basename, result) ->
         throw err if err
-        console.error "Compiled #{infile} -> #{outfile}"
-        proceed()
+
+        outdir  = options.output ? path.dirname infile
+        outfile = path.join outdir, basename + ".eco"
+
+        fs.writeFile outfile, result, "utf8", (err) ->
+          throw err if err
+          console.error "Compiled #{infile} -> #{outfile}"
+          proceed()
