@@ -3,6 +3,7 @@ path = require "path"
 sys  = require "sys"
 eco  = require "."
 
+{exec} = require "child_process"
 {indent} = require "./util"
 
 printUsage = ->
@@ -62,19 +63,67 @@ read = (stream, callback) ->
 each = ([values...], callback) ->
   do proceed = -> callback values.shift(), proceed
 
-compileFile = (infile, callback) ->
-  basename = path.basename(infile).replace /(\.eco)?$/, ""
+eachFile = (files, callback) ->
+  traverse = (root, dir, done) ->
+    fs.readdir dir, (err, entries) ->
+      return callback err if err
+      each entries, (entry, proceed) ->
+        return done() unless entry?
+        file = path.join dir, entry
+        fs.stat file, (err, stat) ->
+          return callback err if err
+          if stat.isFile() and /\.eco$/.test file
+            callback null, file, root, proceed
+          else if stat.isDirectory()
+            traverse root, file, proceed
+          else
+            proceed()
 
+  each files, (file, proceed) ->
+    return unless file?
+    fs.stat file, (err, stat) ->
+      return callback err if err
+      if stat.isDirectory()
+        traverse file, file, proceed
+      else
+        root = path.dirname file
+        callback null, file, root, proceed
+
+stripExtension = (name) ->
+  name.replace /(\.eco)?$/, ""
+
+compile = (infile, name, callback) ->
   fs.readFile infile, "utf8", (err, source) ->
     return callback err if err
     template = indent eco.compile(source), 2
 
-    callback null, basename, """
+    callback null, """
       (function() {
         this.ecoTemplates || (this.ecoTemplates = {});
-        this.ecoTemplates[#{JSON.stringify basename}] = #{template.slice 2};
+        this.ecoTemplates[#{JSON.stringify name}] = #{template.slice 2};
       }).call(this);
     """
+
+mkdir = (dir, callback) ->
+  exec "mkdir -p #{JSON.stringify dir}", (err, stdout, stderr) ->
+    callback err
+
+compileToFile = (infile, root, outdir, callback) ->
+  root = path.join root, "/"
+
+  if root is infile.slice 0, root.length
+    name = stripExtension infile.slice root.length
+  else
+    name = stripExtension infile
+
+  outfile = path.join outdir ? root, name + ".js"
+
+  mkdir path.dirname(outfile), (err) ->
+    return callback err if err
+    compile infile, name, (err, result) ->
+      fs.writeFile outfile, result, "utf8", (err) ->
+        return callback err if err
+        callback null, outfile, name
 
 exports.run = (args = process.argv.slice 2) ->
   options = parseOptions args
@@ -87,21 +136,20 @@ exports.run = (args = process.argv.slice 2) ->
 
   else if options.print
     printUsage() if options.files.length isnt 1 or options.output
-    compileFile options.files[0], (err, basename, result) ->
+    infile = options.files[0]
+    name = stripExtension path.basename infile
+
+    compile infile, name, (err, result) ->
       throw err if err
       sys.puts result
 
   else
     printUsage() unless options.files.length
-    each options.files, (infile, proceed) ->
+    eachFile options.files, (err, infile, root, proceed) ->
+      throw err if err
       return unless infile?
-      compileFile infile, (err, basename, result) ->
+
+      compileToFile infile, root, options.output, (err, outfile, name) ->
         throw err if err
-
-        outdir  = options.output ? path.dirname infile
-        outfile = path.join outdir, basename + ".eco"
-
-        fs.writeFile outfile, result, "utf8", (err) ->
-          throw err if err
-          console.error "Compiled #{infile} -> #{outfile}"
-          proceed()
+        console.error "#{JSON.stringify name}: #{infile} -> #{outfile}"
+        proceed()
