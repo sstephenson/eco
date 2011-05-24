@@ -32,17 +32,6 @@ task "fixtures", "Generate .coffee fixtures from .eco fixtures", ->
       source       = fs.readFileSync "#{dir}/#{filename}", "utf-8"
       fs.writeFileSync "#{dir}/#{basename}.coffee", preprocess source
 
-task "doc", "Generate documentation", ->
-  fs  = require "fs"
-  eco = require "eco"
-  dir = "#{__dirname}/doc"
-
-  render = (path) ->
-    template = fs.readFileSync "#{dir}/#{path}.md.eco", "utf-8"
-    eco.render template, include: render
-
-  fs.writeFileSync "#{__dirname}/README.md", render "readme"
-
 task "dist", "Generate dist/eco.js", ->
   build -> bundle ->
     fs     = require("fs")
