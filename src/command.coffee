@@ -121,7 +121,7 @@ compileToFile = (infile, root, outdir, callback) ->
   mkdir path.dirname(outfile), (err) ->
     return callback err if err
     compile infile, name, (err, result) ->
-      fs.writeFile outfile, result, "utf8", (err) ->
+      fs.writeFile outfile, result + "\n", "utf8", (err) ->
         return callback err if err
         callback null, outfile, name
 
