@@ -11,11 +11,12 @@ printUsage = ->
 
     Usage: eco [options] path/to/template.eco
 
-      -o, --output [DIR]  set the directory for compiled JavaScript
-      -p, --print         print the compiled JavaScript to stdout
-      -s, --stdio         listen for and compile templates over stdio
-      -v, --version       display Eco version
-      -h, --help          display this help message
+      -i, --identifier [NAME] set the name of the global template object
+      -o, --output [DIR]      set the directory for compiled JavaScript
+      -p, --print             print the compiled JavaScript to stdout
+      -s, --stdio             listen for and compile templates over stdio
+      -v, --version           display Eco version
+      -h, --help              display this help message
 
   """
   process.exit 1
@@ -36,7 +37,7 @@ preprocessArgs = (args) ->
   result
 
 parseOptions = (args) ->
-  options = files: []
+  options = files: [], identifier: "ecoTemplates"
   option = null
 
   for arg in preprocessArgs args
@@ -45,11 +46,12 @@ parseOptions = (args) ->
       option = null
     else
       switch arg
-        when "-o", "--output"  then option = "output"
-        when "-p", "--print"   then options.print = true
-        when "-s", "--stdio"   then options.stdio = true
-        when "-v", "--version" then printVersion()
-        else (if /^-/.test arg then printUsage() else options.files.push arg)
+        when "-i", "--identifier" then option = "identifier"
+        when "-o", "--output"     then option = "output"
+        when "-p", "--print"      then options.print = true
+        when "-s", "--stdio"      then options.stdio = true
+        when "-v", "--version"    then printVersion()
+        else (if /^-/.test arg    then printUsage() else options.files.push arg)
 
   printUsage() if option
   options
@@ -92,15 +94,15 @@ eachFile = (files, callback) ->
 stripExtension = (name) ->
   name.replace /(\.eco)?$/, ""
 
-compile = (infile, name, callback) ->
+compile = (infile, identifier, name, callback) ->
   fs.readFile infile, "utf8", (err, source) ->
     return callback err if err
     template = indent eco.compile(source), 2
 
     callback null, """
       (function() {
-        this.ecoTemplates || (this.ecoTemplates = {});
-        this.ecoTemplates[#{JSON.stringify name}] = #{template.slice 2};
+        this.#{identifier} || (this.#{identifier} = {});
+        this.#{identifier}[#{JSON.stringify name}] = #{template.slice 2};
       }).call(this);
     """
 
@@ -108,7 +110,7 @@ mkdir = (dir, callback) ->
   exec "mkdir -p #{JSON.stringify dir}", (err, stdout, stderr) ->
     callback err
 
-compileToFile = (infile, root, outdir, callback) ->
+compileToFile = (infile, identifier, root, outdir, callback) ->
   root = path.join root, "/"
 
   if root is infile.slice 0, root.length
@@ -120,7 +122,7 @@ compileToFile = (infile, root, outdir, callback) ->
 
   mkdir path.dirname(outfile), (err) ->
     return callback err if err
-    compile infile, name, (err, result) ->
+    compile infile, identifier, name, (err, result) ->
       fs.writeFile outfile, result + "\n", "utf8", (err) ->
         return callback err if err
         callback null, outfile, name
@@ -139,7 +141,7 @@ exports.run = (args = process.argv.slice 2) ->
     infile = options.files[0]
     name = stripExtension path.basename infile
 
-    compile infile, name, (err, result) ->
+    compile infile, options.identifier, name, (err, result) ->
       throw err if err
       sys.puts result
 
@@ -149,7 +151,7 @@ exports.run = (args = process.argv.slice 2) ->
       throw err if err
       return unless infile?
 
-      compileToFile infile, root, options.output, (err, outfile, name) ->
+      compileToFile infile, options.identifier, root, options.output, (err, outfile, name) ->
         throw err if err
         console.error "#{JSON.stringify name}: #{infile} -> #{outfile}"
         proceed()
