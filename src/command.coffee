@@ -11,12 +11,12 @@ printUsage = ->
 
     Usage: eco [options] path/to/template.eco
 
-      -i, --identifier [NAME] set the name of the global template object
-      -o, --output [DIR]      set the directory for compiled JavaScript
-      -p, --print             print the compiled JavaScript to stdout
-      -s, --stdio             listen for and compile templates over stdio
-      -v, --version           display Eco version
-      -h, --help              display this help message
+      -i, --identifier [NAME]  set the name of the global template object
+      -o, --output [DIR]       set the directory for compiled JavaScript
+      -p, --print              print the compiled JavaScript to stdout
+      -s, --stdio              listen for and compile templates over stdio
+      -v, --version            display Eco version
+      -h, --help               display this help message
 
   """
   process.exit 1
