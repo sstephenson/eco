@@ -2,10 +2,10 @@
 {trim}          = require "./util"
 
 module.exports = class Scanner
-  @modePatterns: {
-    data: /(.*?)(<%%|<%(([=-])?)|\n|$)/
-    code: /(.*?)(((:|(->|=>))\s*)?%>|\n|$)/
-  }
+  @modePatterns:
+    data:    /(.*?)(<%%|<%\s*(\#)|<%(([=-])?)|\n|$)/
+    code:    /(.*?)((((:|(->|=>))\s*))?%>|\n|$)/
+    comment: /(.*?)(%>|\n|$)/
 
   @dedentablePattern: /^(end|when|else|catch|finally)(?:\W|$)/
 
@@ -43,13 +43,16 @@ module.exports = class Scanner
           @scanData callback
         when "code"
           @scanCode callback
+        when "comment"
+          @scanComment callback
 
   advance: ->
     @scanner.scanUntil Scanner.modePatterns[@mode]
     @buffer   += @scanner.getCapture 0
     @tail      = @scanner.getCapture 1
-    @directive = @scanner.getCapture 3
-    @arrow     = @scanner.getCapture 4
+    @comment   = @scanner.getCapture 2
+    @directive = @scanner.getCapture 4
+    @arrow     = @scanner.getCapture 5
 
   scanData: (callback) ->
     if @tail is "<%%"
@@ -62,9 +65,12 @@ module.exports = class Scanner
       @scan callback
 
     else if @tail
-      @mode = "code"
       callback ["printString", @flush()]
-      callback ["beginCode", print: @directive?, safe: @directive is "-"]
+      if @comment
+        @mode = "comment"
+      else
+        @mode = "code"
+        callback ["beginCode", print: @directive?, safe: @directive is "-"]
 
   scanCode: (callback) ->
     if @tail is "\n"
@@ -78,6 +84,14 @@ module.exports = class Scanner
       callback ["dedent"] if @isDedentable code
       callback ["recordCode", code]
       callback ["indent", @arrow] if @directive
+
+  scanComment: (callback) ->
+    if @tail is "\n"
+      callback ["fail", "unexpected newline in code block"]
+
+    else if @tail
+      @mode   = "data"
+      @buffer = ""
 
   flush: ->
     buffer  = @buffer

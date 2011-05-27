@@ -90,3 +90,14 @@ module.exports =
     test.same ["fail", "unexpected end of template"], tokens.shift()
     test.done()
 
+  "comments are ignored": (test) ->
+    tokens = scan "foo\n<%# bar %>\nbaz"
+    test.same ["printString", "foo\n"], tokens.shift()
+    test.same ["printString", "\nbaz"], tokens.shift()
+    test.done()
+
+  "a comment tag can end with a colon": (test) ->
+    tokens = scan "foo\n<% # This is a comment: %>\nbar"
+    test.same ["printString", "foo\n"], tokens.shift()
+    test.same ["printString", "\nbar"], tokens.shift()
+    test.done()
