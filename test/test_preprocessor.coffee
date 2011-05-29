@@ -2,10 +2,6 @@
 {fixture}    = require "./lib/fixtures"
 
 module.exports =
-  "can be accessed as eco.preprocess": (test) ->
-    test.same fixture("hello.coffee"), require("..").preprocess fixture("hello.eco")
-    test.done()
-
   "preprocessing fixtures/hello.eco": (test) ->
     test.same fixture("hello.coffee"), preprocess fixture("hello.eco")
     test.done()
@@ -74,4 +70,3 @@ module.exports =
     test.same "", lines.pop()
     test.ok lines.pop().match(/^\S/)
     test.done()
-

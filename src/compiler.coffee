@@ -2,12 +2,7 @@ CoffeeScript = require "coffee-script"
 {preprocess} = require "./preprocessor"
 {indent}     = require "./util"
 
-module.exports = eco = (source) ->
-  do new Function "return #{compile source}"
-
-eco.preprocess = preprocess
-
-eco.compile = compile = (source) ->
+exports.precompile = precompile = (source) ->
   script = CoffeeScript.compile preprocess(source), noWrap: true
 
   """
@@ -56,13 +51,5 @@ eco.compile = compile = (source) ->
     }
   """
 
-eco.render = (source, data) ->
-  (eco source) data
-
-if require.extensions
-  require.extensions[".eco"] = (module, filename) ->
-    source = require("fs").readFileSync filename, "utf-8"
-    module._compile "module.exports = #{compile source}", filename
-
-else if require.registerExtension
-  require.registerExtension ".eco", compile
+exports.compile = (source) ->
+  do new Function "return #{precompile source}"

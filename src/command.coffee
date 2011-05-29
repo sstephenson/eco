@@ -97,7 +97,7 @@ stripExtension = (name) ->
 compile = (infile, identifier, name, callback) ->
   fs.readFile infile, "utf8", (err, source) ->
     return callback err if err
-    template = indent eco.compile(source), 2
+    template = indent eco.precompile(source), 2
 
     callback null, """
       (function() {
@@ -134,7 +134,7 @@ exports.run = (args = process.argv.slice 2) ->
     printUsage() if options.files.length or options.output
     process.openStdin()
     read process.stdin, (source) ->
-      sys.puts eco.compile source
+      sys.puts eco.precompile source
 
   else if options.print
     printUsage() if options.files.length isnt 1 or options.output

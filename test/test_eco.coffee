@@ -7,15 +7,46 @@ items = [
 ]
 
 module.exports =
-  "linking hello.eco": (test) ->
+  "eco() caches compiled templates": (test) ->
     render = eco fixture("hello.eco")
+    test.same render, eco fixture("hello.eco")
+    test.done()
+
+  "cache can be disabled": (test) ->
+    cache = eco.cache
+    eco.cache = false
+    render = eco fixture("hello.eco")
+    test.ok render isnt eco fixture("hello.eco")
+    eco.cache = cache
+    test.done()
+
+  "eco.preprocess": (test) ->
+    test.same fixture("hello.coffee"), eco.preprocess fixture("hello.eco")
+    test.done()
+
+  "eco.precompile": (test) ->
+    js = eco.precompile "Hello <%= @name %>"
+    test.ok typeof js is "string"
+    fn = eval "(#{js})"
+    test.ok typeof fn is "function"
+    test.same "Hello Sam", fn name: "Sam"
+    test.done()
+
+  "compiling hello.eco": (test) ->
+    render = eco.compile fixture("hello.eco")
     test.same fixture("hello.out.1"), render name: "Sam"
     test.done()
 
-  "linked templates can be reused": (test) ->
-    render = eco "Hello <%= @name %>"
+  "compiled templates can be reused": (test) ->
+    render = eco.compile "Hello <%= @name %>"
     test.same "Hello Sam", render name: "Sam"
     test.same "Hello Josh", render name: "Josh"
+    test.done()
+
+  "eco.compile bypasses cache": (test) ->
+    test.ok eco.cache
+    render = eco.compile fixture("hello.eco")
+    test.ok render isnt eco.compile fixture("hello.eco")
     test.done()
 
   "rendering hello.eco": (test) ->
@@ -91,4 +122,13 @@ module.exports =
 
   "rendering an escaped <%": (test) ->
     test.same "<%", eco.render "<%%"
+    test.done()
+
+  "requiring eco templates as modules": (test) ->
+    require.paths.unshift __dirname + "/fixtures"
+
+    hello = require "hello.eco"
+    test.ok typeof hello is "function"
+    test.same fixture("hello.out.1"), hello name: "Sam"
+
     test.done()
