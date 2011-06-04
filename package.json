@@ -4,7 +4,7 @@
 , "version": "1.1.0-rc-1"
 , "licenses": [
   { "type": "MIT"
-  , "url": "http://github.com/sstephenson/eco/raw/master/LICENSE"
+  , "url": "https://github.com/sstephenson/eco/raw/master/LICENSE"
   }]
 , "main": "./lib/index.js"
 , "bin": "./bin/eco"
