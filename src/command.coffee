@@ -1,6 +1,6 @@
 fs   = require "fs"
 path = require "path"
-sys  = require "sys"
+sys  = require "util"
 eco  = require ".."
 
 {exec} = require "child_process"
