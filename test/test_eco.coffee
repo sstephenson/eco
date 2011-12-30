@@ -125,9 +125,7 @@ module.exports =
     test.done()
 
   "requiring eco templates as modules": (test) ->
-    require.paths.unshift __dirname + "/fixtures"
-
-    hello = require "hello.eco"
+    hello = require __dirname + "/fixtures/hello.eco"
     test.ok typeof hello is "function"
     test.same fixture("hello.out.1"), hello name: "Sam"
 
