@@ -189,7 +189,7 @@ value.
 
     eco.render template,
       project: { id: 1, name: "Mobile app" }
-      formFor: (project, yield) ->
+      formFor: (project, yield_to) ->
         form =
           textField: (attribute) =>
             name  = @escape attribute
@@ -197,7 +197,7 @@ value.
             @safe "<input type='text' name='#{name}' value='#{value}'>"
 
         url  = "/projects/#{@project.id}"
-        body = yield form
+        body = yield_to form
         @safe "<form action='#{url}' method='post'>#{body}</form>"
 
 Note: In general, you should use CoffeeScript's fat arrow (`=>`) to
